@@ -1,0 +1,33 @@
+<div class="container page-content">
+    <h2>Seu Carrinho</h2>
+    <div *ngIf="(cartItems$ | async) as items">
+        <div *ngIf="items.length > 0; else emptyCart">
+            <div class="cart-items">
+                <div class="cart-item" *ngFor="let item of items">
+                    <img [src]="item.product.imagemURL" [alt]="item.product.nome" class="item-image"
+                        (error)="handleImageError($event)">
+                    <div class="item-details">
+                        <h3>{{item.product.nome}}</h3>
+                        <p class="price">{{item.product.preco | currency:'BRL'}}</p>
+                    </div>
+                    <div class="item-actions">
+                        <button (click)="updateQuantity(item.product.id, item.quantidade - 1)">-</button>
+                        <span>{{item.quantidade}}</span>
+                        <button (click)="updateQuantity(item.product.id, item.quantidade + 1)">+</button>
+                        <button class="remove-btn" (click)="removeItem(item.product.id)">Remover</button>
+                    </div>
+                </div>
+            </div>
+            <div class="cart-summary">
+                <h3>Total: {{total$ | async | currency:'BRL'}}</h3>
+                <button class="checkout-btn" routerLink="/checkout">Continuar para Checkout</button>
+            </div>
+        </div>
+        <ng-template #emptyCart>
+            <div class="empty-state">
+                <p>Seu carrinho está vazio.</p>
+                <a routerLink="/produtos" class="cta-btn">Ver Produtos</a>
+            </div>
+        </ng-template>
+    </div>
+</div>

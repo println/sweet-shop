@@ -1,0 +1,205 @@
+.checkout-container {
+    padding: 2rem 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+h2 {
+    text-align: center;
+    color: var(--primary-color);
+    margin-bottom: 2rem;
+    font-size: 2rem;
+}
+
+.checkout-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+@media (max-width: 768px) {
+    .checkout-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Sections */
+.address-section,
+.order-summary {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.order-summary {
+    position: sticky;
+    top: 100px;
+    /* Adjust based on header height */
+}
+
+h3 {
+    color: var(--secondary-color);
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 0.5rem;
+}
+
+/* Form Header */
+.form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.form-header h3 {
+    margin-bottom: 0;
+    border-bottom: none;
+}
+
+.btn-close {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: #999;
+    cursor: pointer;
+    padding: 5px;
+    transition: color 0.2s;
+}
+
+.btn-close:hover {
+    color: #e74c3c;
+}
+
+/* Address Summary */
+.address-summary {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+    border: 1px solid #eee;
+}
+
+.summary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.summary-header h4 {
+    margin: 0;
+    color: var(--primary-color);
+}
+
+.btn-edit {
+    background: none;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 4px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.btn-edit:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+.summary-content p {
+    margin: 0.3rem 0;
+    color: #555;
+}
+
+/* Order Items */
+.items-list {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 1.5rem;
+    padding-right: 20px;
+}
+
+.item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid #eee;
+    margin-right: 10px;
+    /* Extra spacing for scrollbar */
+}
+
+.item-info {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.item-qty {
+    font-weight: bold;
+    color: var(--primary-color);
+    background: #fff0f0;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.item-name {
+    color: #333;
+}
+
+.item-price {
+    font-weight: 600;
+    color: #555;
+}
+
+/* Total Section */
+.total-section {
+    background: #fdfdfd;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid #eee;
+    margin-bottom: 1.5rem;
+}
+
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.2rem;
+    color: var(--primary-color);
+}
+
+/* WhatsApp Button */
+.whatsapp-btn {
+    background-color: #25D366;
+    color: white;
+    border: none;
+    padding: 1rem;
+    width: 100%;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.whatsapp-btn:hover:not(:disabled) {
+    background-color: #128C7E;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+}
+
+.whatsapp-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+    opacity: 0.7;
+}

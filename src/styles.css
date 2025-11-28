@@ -1,0 +1,29 @@
+:root {
+  --primary-color: #8B4513; /* SaddleBrown */
+  --secondary-color: #D2691E; /* Chocolate */
+  --accent-color: #FF69B4; /* HotPink (softened in usage) */
+  --background-color: #FFF5EE; /* Seashell */
+  --text-color: #4A4A4A;
+  --card-bg: #FFFFFF;
+  --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}

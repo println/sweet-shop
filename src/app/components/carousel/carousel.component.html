@@ -1,0 +1,8 @@
+<section class="carousel-section">
+    <div class="container">
+        <h2>Destaques da Semana</h2>
+        <div class="grid">
+            <app-product-card *ngFor="let product of featuredProducts$ | async" [product]="product"></app-product-card>
+        </div>
+    </div>
+</section>

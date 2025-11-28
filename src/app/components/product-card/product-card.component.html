@@ -1,0 +1,11 @@
+<div class="product-card" [routerLink]="['/produto', product.id]">
+    <div class="image-container">
+        <img [src]="product.imagemURL" [alt]="product.nome" class="product-image" (error)="handleImageError($event)">
+        <span class="badge" *ngIf="product.destaqueHome">Destaque</span>
+    </div>
+    <div class="content">
+        <h3 class="title" title={{product.nome}}>{{product.nome}}</h3>
+        <p class="price">{{product.preco | currency:'BRL'}}</p>
+        <button class="add-btn" (click)="$event.stopPropagation(); addToCart()">Adicionar ao Carrinho</button>
+    </div>
+</div>

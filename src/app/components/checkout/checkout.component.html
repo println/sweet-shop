@@ -1,0 +1,64 @@
+<div class="checkout-container">
+    <h2>Finalizar Pedido</h2>
+
+    <div class="checkout-grid">
+        <!-- Left Column: Address -->
+        <div class="address-section">
+            <h3>Endereço de Entrega</h3>
+
+            <!-- Form State -->
+            <div *ngIf="!addressConfirmed">
+                <div class="form-header" *ngIf="currentProfile">
+                    <h3>Editar Endereço</h3>
+                    <button class="btn-close" (click)="cancelEdit()" title="Cancelar Edição">✕</button>
+                </div>
+                <app-user-form [initialData]="currentProfile" [submitLabel]="'Salvar e Continuar'"
+                    [disableSubmitIfNoChanges]="true" (formSubmit)="onAddressConfirmed($event)">
+                </app-user-form>
+            </div>
+
+            <!-- Summary State -->
+            <div *ngIf="addressConfirmed && currentProfile" class="address-summary">
+                <div class="summary-header">
+                    <h4>Dados de Entrega</h4>
+                    <button class="btn-edit" (click)="editAddress()">Editar</button>
+                </div>
+                <div class="summary-content">
+                    <p><strong>Nome:</strong> {{currentProfile.nome}}</p>
+                    <p><strong>Telefone:</strong> {{currentProfile.telefone}}</p>
+                    <p><strong>Endereço:</strong></p>
+                    <p>{{currentProfile.endereco.rua}}, {{currentProfile.endereco.numero}}</p>
+                    <p>{{currentProfile.endereco.bairro}}</p>
+                    <p>{{currentProfile.endereco.cidade}} - {{currentProfile.endereco.estado}}</p>
+                    <p>CEP: {{currentProfile.endereco.cep}}</p>
+                    <p *ngIf="currentProfile.endereco.referencia">Ref: {{currentProfile.endereco.referencia}}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Order Summary -->
+        <div class="order-summary">
+            <h3>Resumo do Pedido</h3>
+            <div class="items-list">
+                <div class="item" *ngFor="let item of cartItems$ | async">
+                    <div class="item-info">
+                        <span class="item-qty">{{item.quantidade}}x</span>
+                        <span class="item-name">{{item.product.nome}}</span>
+                    </div>
+                    <span class="item-price">R$ {{ (item.product.preco * item.quantidade).toFixed(2) }}</span>
+                </div>
+            </div>
+
+            <div class="total-section">
+                <div class="total-row">
+                    <span>Total</span>
+                    <strong>R$ {{ (total$ | async)?.toFixed(2) }}</strong>
+                </div>
+            </div>
+
+            <button class="whatsapp-btn" (click)="onCheckout()" [disabled]="!addressConfirmed">
+                {{ !addressConfirmed ? 'Preencha o endereço' : 'Enviar Pedido no WhatsApp' }}
+            </button>
+        </div>
+    </div>
+</div>

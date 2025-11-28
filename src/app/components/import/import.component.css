@@ -1,0 +1,14 @@
+.page-content {
+    padding: 4rem 1rem;
+    text-align: center;
+}
+
+h2 {
+    color: var(--primary-color);
+    margin-bottom: 2rem;
+}
+
+.status-message {
+    font-size: 1.2rem;
+    color: #666;
+}

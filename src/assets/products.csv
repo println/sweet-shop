@@ -1,0 +1,7 @@
+id,nome,descricao,preco,imagemURL,tipo,destaqueHome
+1,Bolo de Chocolate,Delicioso bolo com cobertura de ganache,55.00,assets/images/bolo-chocolate.jpg,Bolo,1
+2,Cupcake Red Velvet,Massa vermelha com cream cheese,12.00,assets/images/cupcake-red.jpg,Doce,1
+3,Torta de Limão,Massa crocante com recheio cremoso,45.00,assets/images/torta-limao.jpg,Torta,1
+4,Brigadeiro Gourmet,Chocolate belga ao leite,5.00,assets/images/brigadeiro.jpg,Doce,0
+5,Bolo de Cenoura,Com cobertura de chocolate crocante,40.00,assets/images/bolo-cenoura.jpg,Bolo,0
+6,Cheesecake de Frutas Vermelhas,Base de biscoito e calda artesanal,60.00,assets/images/cheesecake.jpg,Torta,1

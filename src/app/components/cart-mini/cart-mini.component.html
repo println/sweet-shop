@@ -1,0 +1,25 @@
+<div class="cart-popup">
+    <div class="cart-items">
+        <div class="cart-item" *ngFor="let item of cartItems$ | async">
+            <img [src]="item.product.imagem" [alt]="item.product.nome"
+                onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDUwIDUwIj48cmVjdCB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIGZpbGw9IiNlZWVlZWUiLz48L3N2Zz4='">
+            <div class="item-details">
+                <span class="item-name">{{item.product.nome}}</span>
+                <div class="item-quantity-controls">
+                    <span class="item-price">{{item.quantidade}}x R$ {{item.product.preco | number:'1.2-2'}}</span>
+                    <div class="item-quantity-controls-add-remove">
+                        <button class="btn-qty"
+                            (click)="updateQuantity(item.product.id, item.quantidade - 1)">-</button>
+                        <button class="btn-qty"
+                            (click)="updateQuantity(item.product.id, item.quantidade + 1)">+</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="cart-total">
+        <span>Total:</span>
+        <strong>R$ {{cartTotal$ | async | number:'1.2-2'}}</strong>
+    </div>
+    <a routerLink="/carrinho" class="btn-view-cart" (click)="close.emit()">Ver Carrinho</a>
+</div>

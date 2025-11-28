@@ -1,0 +1,14 @@
+<div class="container page-content">
+    <h2>Nossos Produtos</h2>
+
+    <div class="filters">
+        <button *ngFor="let category of categories$ | async" [class.active]="selectedCategory === category"
+            (click)="filterByCategory(category)" class="filter-btn">
+            {{category}}
+        </button>
+    </div>
+
+    <div class="grid">
+        <app-product-card *ngFor="let product of filteredProducts$ | async" [product]="product"></app-product-card>
+    </div>
+</div>

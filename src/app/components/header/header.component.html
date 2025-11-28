@@ -1,0 +1,24 @@
+<header class="header">
+    <div class="container">
+        <a routerLink="/" class="logo">Sweet Shop</a>
+        <nav>
+            <a routerLink="/home" routerLinkActive="active">Home</a>
+            <a routerLink="/produtos" routerLinkActive="active">Produtos</a>
+
+            <div class="cart-wrapper" (mouseenter)="onCartHover()" (mouseleave)="onCartLeave()">
+                <a routerLink="/carrinho" routerLinkActive="active" (click)="showPopup = false">
+                    Carrinho <span *ngIf="cartCount$ | async as count">({{count}})</span>
+                </a>
+
+                <app-cart-mini *ngIf="showPopup && (cartCount$ | async)" (close)="showPopup = false"></app-cart-mini>
+            </div>
+
+            <a routerLink="/profile" routerLinkActive="active" class="profile-link" title="Meu Perfil">
+                <div class="profile-avatar">
+                    <img src="assets/images/user-placeholder.png" alt="Perfil"
+                        onerror="this.src='https://cdn-icons-png.flaticon.com/512/149/149071.png'">
+                </div>
+            </a>
+        </nav>
+    </div>
+</header>
