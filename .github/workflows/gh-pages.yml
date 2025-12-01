@@ -27,9 +27,6 @@ jobs:
       - name: Build
         run: npm run build -- --configuration production --base-href /sweet-shop/
 
-      - name: Copy index.html to 404.html
-        run: cp dist/sweet-shop/browser/index.html dist/sweet-shop/browser/404.html
-
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4
         with:
