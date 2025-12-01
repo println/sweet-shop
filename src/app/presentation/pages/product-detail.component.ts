@@ -12,14 +12,6 @@ import { Observable, map, switchMap, of } from 'rxjs';
   imports: [CommonModule, RouterLink],
   template: `
     <div class="container mx-auto p-4 lg:p-8 min-h-screen bg-white pb-24 lg:pb-8">
-      
-      <!-- Back Link -->
-      <div class="mb-6">
-        <a routerLink="/products" class="text-sm text-gray-500 hover:text-soft-brown flex items-center gap-1">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
-          Voltar para produtos
-        </a>
-      </div>
 
       <div *ngIf="product$ | async as product; else loading" class="flex flex-col lg:flex-row gap-6 lg:gap-12">
         
@@ -44,7 +36,9 @@ import { Observable, map, switchMap, of } from 'rxjs';
         <div class="w-full lg:w-3/5">
           
           <!-- Mobile Carousel -->
-          <div class="lg:hidden relative aspect-[4/5] bg-gray-100 overflow-hidden mb-6 group -mx-4 w-[calc(100%+2rem)]">
+          <div class="lg:hidden relative aspect-[4/5] bg-gray-100 overflow-hidden mb-6 group -mx-4 w-[calc(100%+2rem)]"
+               (touchstart)="onTouchStart($event)" 
+               (touchend)="onTouchEnd($event)">
             <img [src]="images[currentImageIndex]" [alt]="product.name" class="w-full h-full object-cover transition-opacity duration-300">
             
             <!-- Navigation Arrows -->
@@ -341,5 +335,28 @@ export class ProductDetailComponent implements OnInit {
   calculateDiscount(product: Product): number {
     if (!product.originalPrice) return 0;
     return Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100);
+  }
+
+  // Swipe Logic
+  private touchStartX = 0;
+  private touchEndX = 0;
+
+  onTouchStart(event: TouchEvent) {
+    this.touchStartX = event.changedTouches[0].screenX;
+  }
+
+  onTouchEnd(event: TouchEvent) {
+    this.touchEndX = event.changedTouches[0].screenX;
+    this.handleSwipe();
+  }
+
+  private handleSwipe() {
+    const swipeThreshold = 50; // Minimum distance to consider a swipe
+    if (this.touchEndX < this.touchStartX - swipeThreshold) {
+      this.nextImage(); // Swipe Left -> Next
+    }
+    if (this.touchEndX > this.touchStartX + swipeThreshold) {
+      this.prevImage(); // Swipe Right -> Prev
+    }
   }
 }
