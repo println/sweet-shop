@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ProductsRepository } from '../../application/state/products.repository';
@@ -11,7 +11,7 @@ import { Observable, map, switchMap, of } from 'rxjs';
   standalone: true,
   imports: [CommonModule, RouterLink],
   template: `
-    <div class="container mx-auto p-4 lg:p-8 min-h-screen bg-white">
+    <div class="container mx-auto p-4 lg:p-8 min-h-screen bg-white pb-24 lg:pb-8">
       
       <!-- Back Link -->
       <div class="mb-6">
@@ -21,28 +21,54 @@ import { Observable, map, switchMap, of } from 'rxjs';
         </a>
       </div>
 
-      <div *ngIf="product$ | async as product; else loading" class="flex flex-col lg:flex-row gap-12">
+      <div *ngIf="product$ | async as product; else loading" class="flex flex-col lg:flex-row gap-6 lg:gap-12">
         
-        <!-- Left Column: Image Grid -->
+        <!-- Mobile Header (Title, Badges, Reviews) -->
+        <div class="lg:hidden">
+          <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ product.name }}</h1>
+          
+          <div class="flex items-center gap-4 mb-4">
+            <div class="flex items-center gap-1">
+              <span class="badge badge-outline border-gray-300 text-xs font-bold px-2 py-1">BLACK FRIDAY</span>
+              <span class="badge badge-outline border-gray-300 text-xs font-bold px-2 py-1" *ngIf="product.originalPrice">{{ calculateDiscount(product) }}% OFF</span>
+            </div>
+            <div class="flex items-center gap-1 text-sm text-gray-500">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-900 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+              <span class="font-bold text-gray-900">{{ (product.rating || 4.9).toFixed(1) }}</span>
+              <span class="underline decoration-gray-300 underline-offset-2">({{ product.reviews || 25308 }} reviews)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Left Column: Images -->
         <div class="w-full lg:w-3/5">
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <!-- Main Image (repeated for grid effect as per mock) -->
-            <div class="aspect-[4/5] bg-gray-100 rounded-lg overflow-hidden">
-              <img [src]="product.image" [alt]="product.name" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+          
+          <!-- Mobile Carousel -->
+          <div class="lg:hidden relative aspect-[4/5] bg-gray-100 overflow-hidden mb-6 group -mx-4 w-[calc(100%+2rem)]">
+            <img [src]="images[currentImageIndex]" [alt]="product.name" class="w-full h-full object-cover transition-opacity duration-300">
+            
+            <!-- Navigation Arrows -->
+            <button (click)="prevImage()" class="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-md hover:bg-white" *ngIf="images.length > 1">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+            </button>
+            <button (click)="nextImage()" class="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-md hover:bg-white" *ngIf="images.length > 1">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+            </button>
+
+            <!-- Dots -->
+            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+              <span *ngFor="let img of images; let i = index" 
+                    class="block w-2 h-2 rounded-full transition-colors"
+                    [class.bg-soft-brown]="i === currentImageIndex"
+                    [class.bg-white]="i !== currentImageIndex">
+              </span>
             </div>
-            <div class="aspect-[4/5] bg-gray-100 rounded-lg overflow-hidden">
-               <!-- Mocking a second image with same source for demo -->
-              <img [src]="product.image" [alt]="product.name" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" style="filter: brightness(0.95)">
-            </div>
-            <div class="aspect-[4/5] bg-gray-100 rounded-lg overflow-hidden">
-              <img [src]="product.image" [alt]="product.name" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" style="filter: sepia(0.2)">
-            </div>
-            <div class="aspect-[4/5] bg-gray-100 rounded-lg overflow-hidden relative">
-               <img [src]="product.image" [alt]="product.name" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500" style="filter: contrast(1.1)">
-               <!-- Video Icon Mock -->
-               <div class="absolute bottom-4 left-4 bg-white/90 p-2 rounded-full shadow-md">
-                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-800" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-               </div>
+          </div>
+
+          <!-- Desktop Grid -->
+          <div class="hidden lg:grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="aspect-[4/5] bg-gray-100 rounded-lg overflow-hidden" *ngFor="let img of images">
+              <img [src]="img" [alt]="product.name" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
             </div>
           </div>
         </div>
@@ -51,18 +77,21 @@ import { Observable, map, switchMap, of } from 'rxjs';
         <div class="w-full lg:w-2/5 flex flex-col gap-6 sticky top-24 h-fit">
           
           <div>
-            <h1 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-2">{{ product.name }}</h1>
-            
-            <!-- Ratings & Badges -->
-            <div class="flex items-center gap-4 mb-4">
-              <div class="flex items-center gap-1">
-                <span class="badge badge-outline border-gray-300 text-xs font-bold px-2 py-1">BLACK FRIDAY</span>
-                <span class="badge badge-outline border-gray-300 text-xs font-bold px-2 py-1" *ngIf="product.originalPrice">{{ calculateDiscount(product) }}% OFF</span>
-              </div>
-              <div class="flex items-center gap-1 text-sm text-gray-500">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-900 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
-                <span class="font-bold text-gray-900">{{ (product.rating || 4.9).toFixed(1) }}</span>
-                <span class="underline decoration-gray-300 underline-offset-2">({{ product.reviews || 25308 }} reviews)</span>
+            <!-- Desktop Title, Badges, Reviews (Hidden on Mobile) -->
+            <div class="hidden lg:block">
+              <h1 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-2">{{ product.name }}</h1>
+              
+              <!-- Ratings & Badges -->
+              <div class="flex items-center gap-4 mb-4">
+                <div class="flex items-center gap-1">
+                  <span class="badge badge-outline border-gray-300 text-xs font-bold px-2 py-1">BLACK FRIDAY</span>
+                  <span class="badge badge-outline border-gray-300 text-xs font-bold px-2 py-1" *ngIf="product.originalPrice">{{ calculateDiscount(product) }}% OFF</span>
+                </div>
+                <div class="flex items-center gap-1 text-sm text-gray-500">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-900 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                  <span class="font-bold text-gray-900">{{ (product.rating || 4.9).toFixed(1) }}</span>
+                  <span class="underline decoration-gray-300 underline-offset-2">({{ product.reviews || 25308 }} reviews)</span>
+                </div>
               </div>
             </div>
 
@@ -166,8 +195,8 @@ import { Observable, map, switchMap, of } from 'rxjs';
               </div>
             </div>
 
-            <!-- Actions -->
-            <button (click)="addToCart(product)" class="btn btn-primary btn-block bg-black hover:bg-gray-800 text-white border-none h-14 text-base font-bold uppercase tracking-wide rounded-md">
+            <!-- Actions (Desktop / Main) -->
+            <button #addToCartBtn (click)="addToCart(product)" class="btn btn-primary btn-block bg-black hover:bg-gray-800 text-white border-none h-14 text-base font-bold uppercase tracking-wide rounded-md">
               ADICIONAR AO CARRINHO
             </button>
 
@@ -181,6 +210,25 @@ import { Observable, map, switchMap, of } from 'rxjs';
           <span class="loading loading-spinner loading-lg text-soft-brown"></span>
         </div>
       </ng-template>
+
+      <!-- Sticky Mobile Buy Button -->
+      <div class="fixed bottom-0 left-0 right-0 p-4 bg-white border-t border-gray-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] lg:hidden z-40 transition-transform duration-300"
+           [class.translate-y-full]="!showStickyButton"
+           [class.translate-y-0]="showStickyButton"
+           *ngIf="product$ | async as product">
+        <div class="flex items-center gap-4">
+          <div class="flex-1">
+            <div class="text-xs text-gray-500 font-bold uppercase mb-1">{{ product.name }}</div>
+            <div class="flex items-center gap-2">
+              <span class="text-lg font-bold text-soft-brown">R$ {{ product.price.toFixed(2) }}</span>
+              <span *ngIf="product.originalPrice" class="text-xs text-gray-400 line-through">R$ {{ product.originalPrice.toFixed(2) }}</span>
+            </div>
+          </div>
+          <button (click)="addToCart(product)" class="btn btn-primary bg-black hover:bg-gray-800 text-white border-none px-6 font-bold uppercase">
+            Comprar
+          </button>
+        </div>
+      </div>
 
     </div>
   `
@@ -204,6 +252,14 @@ export class ProductDetailComponent implements OnInit {
 
   selectedQuantity = 1;
 
+  // Carousel State
+  images: string[] = [];
+  currentImageIndex = 0;
+
+  // Sticky Button State
+  showStickyButton = false;
+  @ViewChild('addToCartBtn') addToCartBtn!: ElementRef;
+
   constructor(
     private route: ActivatedRoute,
     private productsRepo: ProductsRepository,
@@ -217,14 +273,24 @@ export class ProductDetailComponent implements OnInit {
             map(products => {
               const product = products.find(p => p.id === id);
               if (product) {
-                // Enrich with mock data if missing (consistent with products list)
-                return {
+                // Enrich with mock data if missing
+                const enriched = {
                   ...product,
                   originalPrice: product.originalPrice || product.price * 1.2,
                   rating: product.rating || 4.9,
                   reviews: product.reviews || 120,
                   isNew: product.isNew
                 };
+
+                // Initialize mock images
+                this.images = [
+                  product.image,
+                  product.image, // Mock duplicate for carousel demo
+                  product.image,
+                  product.image
+                ];
+
+                return enriched;
               }
               return undefined;
             })
@@ -239,8 +305,27 @@ export class ProductDetailComponent implements OnInit {
     this.productsRepo.load();
   }
 
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    if (this.addToCartBtn) {
+      const rect = this.addToCartBtn.nativeElement.getBoundingClientRect();
+      // Show sticky button when the main button scrolls out of view (top < 0)
+      // or is very close to the top.
+      // Actually, we want it to show when we scroll PAST the button.
+      // rect.bottom < 0 means the button has scrolled up off the screen.
+      this.showStickyButton = rect.bottom < 60; // 60px buffer (header height approx)
+    }
+  }
+
+  nextImage() {
+    this.currentImageIndex = (this.currentImageIndex + 1) % this.images.length;
+  }
+
+  prevImage() {
+    this.currentImageIndex = (this.currentImageIndex - 1 + this.images.length) % this.images.length;
+  }
+
   addToCart(product: Product) {
-    // In a real app, we would add the selected options to the cart item
     console.log('Adding to cart:', {
       product,
       flavor: this.selectedFlavor,
@@ -248,7 +333,6 @@ export class ProductDetailComponent implements OnInit {
       quantity: this.selectedQuantity
     });
 
-    // For now, just add the product multiple times based on quantity
     for (let i = 0; i < this.selectedQuantity; i++) {
       this.cartRepo.addItem(product);
     }

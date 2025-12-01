@@ -14,9 +14,23 @@ import { ProductCardComponent } from '../components/product-card.component';
   standalone: true,
   imports: [CommonModule, RouterLink, FormsModule, ProductCardComponent],
   template: `
-    <div class="container mx-auto p-4 flex flex-col md:flex-row gap-8 min-h-screen">
-      <!-- Filters Sidebar -->
-      <aside class="w-full md:w-64 flex-shrink-0">
+    <div class="w-full mx-auto p-4 md:p-8 flex flex-col md:flex-row gap-8 min-h-screen relative">
+      
+      <!-- Mobile Filter/Sort Toolbar -->
+      <div class="md:hidden flex items-center justify-between mb-4 border-b border-gray-200 pb-4 sticky top-16 bg-base-100 z-30 -mx-4 px-4 pt-2">
+        <button (click)="openFilterDrawer()" class="flex items-center gap-2 text-sm font-bold text-gray-700 uppercase tracking-wide">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" /></svg>
+          Filtro
+        </button>
+        <div class="h-6 w-px bg-gray-300"></div>
+        <button (click)="openSortDrawer()" class="flex items-center gap-2 text-sm font-bold text-gray-700 uppercase tracking-wide">
+          Ordenar Por
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+        </button>
+      </div>
+
+      <!-- Filters Sidebar (Desktop) -->
+      <aside class="hidden md:block w-64 flex-shrink-0">
         <div class="sticky top-24">
           
           <!-- Categories Filter -->
@@ -49,11 +63,13 @@ import { ProductCardComponent } from '../components/product-card.component';
             <h3 class="font-bold text-lg mb-4 text-soft-brown">Promo</h3>
             <div class="flex flex-col gap-2">
               <label class="label cursor-pointer justify-start gap-3 p-0">
-                <input type="checkbox" class="checkbox checkbox-sm checkbox-primary border-soft-brown checked:bg-soft-brown [--chkbg:theme(colors.soft-brown)] [--chkfg:white]" />
+                <input type="checkbox" class="checkbox checkbox-sm checkbox-primary border-soft-brown checked:bg-soft-brown [--chkbg:theme(colors.soft-brown)] [--chkfg:white]" 
+                       [checked]="isPromoSelected('10% OFF')" (change)="togglePromo('10% OFF')" />
                 <span class="label-text text-gray-600">A partir de 10% OFF</span>
               </label>
               <label class="label cursor-pointer justify-start gap-3 p-0">
-                <input type="checkbox" class="checkbox checkbox-sm checkbox-primary border-soft-brown checked:bg-soft-brown [--chkbg:theme(colors.soft-brown)] [--chkfg:white]" />
+                <input type="checkbox" class="checkbox checkbox-sm checkbox-primary border-soft-brown checked:bg-soft-brown [--chkbg:theme(colors.soft-brown)] [--chkfg:white]" 
+                       [checked]="isPromoSelected('20% OFF')" (change)="togglePromo('20% OFF')" />
                 <span class="label-text text-gray-600">A partir de 20% OFF</span>
               </label>
             </div>
@@ -65,8 +81,8 @@ import { ProductCardComponent } from '../components/product-card.component';
       <!-- Main Content -->
       <div class="flex-1">
         
-        <!-- Header & Sorting -->
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+        <!-- Header & Sorting (Desktop) -->
+        <div class="hidden md:flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
           <div>
             <h2 class="text-2xl font-bold text-soft-brown uppercase tracking-wide">Nossos Produtos</h2>
             <p class="text-sm text-gray-500 mt-1">Delícias feitas com amor para você.</p>
@@ -88,7 +104,7 @@ import { ProductCardComponent } from '../components/product-card.component';
         </div>
 
         <!-- Product Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-10">
+        <div class="grid grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-8 md:gap-x-6 md:gap-y-10">
           <div *ngFor="let product of displayedProducts$ | async">
             <app-product-card [product]="product" (addToCart)="addToCart($event)"></app-product-card>
           </div>
@@ -104,6 +120,108 @@ import { ProductCardComponent } from '../components/product-card.component';
 
       </div>
     </div>
+
+    <!-- Mobile Filter Drawer -->
+    <div class="fixed inset-0 z-50 md:hidden" *ngIf="isFilterOpen" role="dialog" aria-modal="true">
+      <!-- Backdrop -->
+      <div class="absolute inset-0 bg-black/50 transition-opacity" (click)="closeFilterDrawer()"></div>
+      
+      <!-- Drawer Panel -->
+      <div class="absolute inset-x-0 bottom-0 h-[80vh] bg-white rounded-t-2xl flex flex-col transition-transform transform translate-y-0">
+        <div class="flex items-center justify-between p-4 border-b border-gray-100">
+          <h3 class="text-lg font-bold text-gray-900">Filtrar Por</h3>
+          <div class="flex items-center gap-2">
+            <button *ngIf="((selectedCategories | async)?.size ?? 0) > 0 || ((selectedPromos | async)?.size ?? 0) > 0" (click)="clearFilters()" class="btn btn-ghost btn-sm text-soft-brown normal-case font-normal">
+              Limpar
+            </button>
+            <button (click)="closeFilterDrawer()" class="btn btn-ghost btn-sm btn-circle">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>
+          </div>
+        </div>
+        
+        <div class="flex-1 overflow-y-auto p-4">
+          <!-- Categories -->
+          <div class="mb-6">
+            <h4 class="font-bold text-base mb-3 text-gray-900">Categoria</h4>
+            <div class="flex flex-col gap-3">
+              <label class="flex items-center gap-3">
+                <input type="checkbox" class="checkbox checkbox-primary border-gray-300 checked:bg-soft-brown [--chkbg:theme(colors.soft-brown)] [--chkfg:white]" 
+                       [checked]="isCategorySelected('Bolos')" (change)="toggleCategory('Bolos')" />
+                <span class="text-base text-gray-700">Bolos</span>
+                <span class="text-sm text-gray-400 ml-auto">({{ getCategoryCount('Bolos') | async }})</span>
+              </label>
+              <label class="flex items-center gap-3">
+                <input type="checkbox" class="checkbox checkbox-primary border-gray-300 checked:bg-soft-brown [--chkbg:theme(colors.soft-brown)] [--chkfg:white]" 
+                       [checked]="isCategorySelected('Doces')" (change)="toggleCategory('Doces')" />
+                <span class="text-base text-gray-700">Doces</span>
+                <span class="text-sm text-gray-400 ml-auto">({{ getCategoryCount('Doces') | async }})</span>
+              </label>
+              <label class="flex items-center gap-3">
+                <input type="checkbox" class="checkbox checkbox-primary border-gray-300 checked:bg-soft-brown [--chkbg:theme(colors.soft-brown)] [--chkfg:white]" 
+                       [checked]="isCategorySelected('Especiais')" (change)="toggleCategory('Especiais')" />
+                <span class="text-base text-gray-700">Especiais</span>
+                <span class="text-sm text-gray-400 ml-auto">({{ getCategoryCount('Especiais') | async }})</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Promo (Mock) -->
+          <div class="mb-6">
+            <h4 class="font-bold text-base mb-3 text-gray-900">Promo</h4>
+            <div class="flex flex-col gap-3">
+              <label class="flex items-center gap-3">
+                <input type="checkbox" class="checkbox checkbox-primary border-gray-300 checked:bg-soft-brown [--chkbg:theme(colors.soft-brown)] [--chkfg:white]" 
+                       [checked]="isPromoSelected('10% OFF')" (change)="togglePromo('10% OFF')" />
+                <span class="text-base text-gray-700">A partir de 10% OFF</span>
+              </label>
+              <label class="flex items-center gap-3">
+                <input type="checkbox" class="checkbox checkbox-primary border-gray-300 checked:bg-soft-brown [--chkbg:theme(colors.soft-brown)] [--chkfg:white]" 
+                       [checked]="isPromoSelected('20% OFF')" (change)="togglePromo('20% OFF')" />
+                <span class="text-base text-gray-700">A partir de 20% OFF</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="p-4 border-t border-gray-100">
+          <button (click)="closeFilterDrawer()" class="btn btn-primary w-full bg-soft-brown border-none hover:bg-[#4E342E] text-white">
+            Ver Resultados
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Sort Drawer -->
+    <div class="fixed inset-0 z-50 md:hidden" *ngIf="isSortOpen" role="dialog" aria-modal="true">
+      <!-- Backdrop -->
+      <div class="absolute inset-0 bg-black/50 transition-opacity" (click)="closeSortDrawer()"></div>
+      
+      <!-- Drawer Panel -->
+      <div class="absolute inset-x-0 bottom-0 bg-white rounded-t-2xl flex flex-col transition-transform transform translate-y-0">
+        <div class="flex items-center justify-between p-4 border-b border-gray-100">
+          <h3 class="text-lg font-bold text-gray-900">Ordenar Por</h3>
+          <button (click)="closeSortDrawer()" class="btn btn-ghost btn-sm btn-circle">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+          </button>
+        </div>
+        
+        <div class="p-4 flex flex-col gap-2">
+          <button (click)="setSort('price-asc'); closeSortDrawer()" class="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50" [class.bg-gray-50]="currentSort === 'price-asc'">
+            <span class="text-base" [class.font-bold]="currentSort === 'price-asc'" [class.text-soft-brown]="currentSort === 'price-asc'">Menor Preço</span>
+            <svg *ngIf="currentSort === 'price-asc'" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-soft-brown" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+          </button>
+          <button (click)="setSort('price-desc'); closeSortDrawer()" class="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50" [class.bg-gray-50]="currentSort === 'price-desc'">
+            <span class="text-base" [class.font-bold]="currentSort === 'price-desc'" [class.text-soft-brown]="currentSort === 'price-desc'">Maior Preço</span>
+            <svg *ngIf="currentSort === 'price-desc'" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-soft-brown" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+          </button>
+          <button (click)="setSort('name-asc'); closeSortDrawer()" class="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50" [class.bg-gray-50]="currentSort === 'name-asc'">
+            <span class="text-base" [class.font-bold]="currentSort === 'name-asc'" [class.text-soft-brown]="currentSort === 'name-asc'">Nome (A-Z)</span>
+            <svg *ngIf="currentSort === 'name-asc'" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-soft-brown" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+          </button>
+        </div>
+      </div>
+    </div>
   `
 })
 export class ProductsComponent implements OnInit {
@@ -112,7 +230,12 @@ export class ProductsComponent implements OnInit {
   displayedProducts$ = new BehaviorSubject<Product[]>([]);
 
   selectedCategories = new BehaviorSubject<Set<string>>(new Set());
+  selectedPromos = new BehaviorSubject<Set<string>>(new Set());
   currentSort = 'price-asc';
+
+  // Mobile Drawer States
+  isFilterOpen = false;
+  isSortOpen = false;
 
   // Infinite Scroll State
   pageSize = 9;
@@ -131,14 +254,25 @@ export class ProductsComponent implements OnInit {
 
     this.filteredProducts$ = combineLatest([
       this.products$,
-      this.selectedCategories
+      this.selectedCategories,
+      this.selectedPromos
     ]).pipe(
-      map(([products, categories]) => {
+      map(([products, categories, promos]) => {
         let filtered = products;
 
         // Filter by Category
         if (categories.size > 0) {
           filtered = filtered.filter(p => categories.has(p.category));
+        }
+
+        // Filter by Promo
+        if (promos.size > 0) {
+          filtered = filtered.filter(p => {
+            const discount = this.calculateDiscount(p);
+            if (promos.has('10% OFF') && discount >= 10) return true;
+            if (promos.has('20% OFF') && discount >= 20) return true;
+            return false;
+          });
         }
 
         // Sort
@@ -171,6 +305,51 @@ export class ProductsComponent implements OnInit {
       this.currentPage = 1;
       this.updateDisplayedProducts(products);
     });
+  }
+
+  // Mobile Drawer Methods
+  openFilterDrawer() {
+    this.isFilterOpen = true;
+    document.body.style.overflow = 'hidden'; // Prevent background scrolling
+  }
+
+  closeFilterDrawer() {
+    this.isFilterOpen = false;
+    document.body.style.overflow = '';
+  }
+
+  clearFilters() {
+    this.selectedCategories.next(new Set());
+    this.selectedPromos.next(new Set());
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { category: null },
+      queryParamsHandling: 'merge'
+    });
+  }
+
+  openSortDrawer() {
+    this.isSortOpen = true;
+    document.body.style.overflow = 'hidden';
+  }
+
+  closeSortDrawer() {
+    this.isSortOpen = false;
+    document.body.style.overflow = '';
+  }
+
+  togglePromo(promo: string) {
+    const current = new Set(this.selectedPromos.value);
+    if (current.has(promo)) {
+      current.delete(promo);
+    } else {
+      current.add(promo);
+    }
+    this.selectedPromos.next(current);
+  }
+
+  isPromoSelected(promo: string): boolean {
+    return this.selectedPromos.value.has(promo);
   }
 
   // Mock Data Enrichment
