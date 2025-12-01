@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { CartRepository } from '../../application/state/cart.repository';
+import { UserRepository } from '../../application/state/user.repository';
 
 @Component({
   selector: 'app-navbar',
@@ -28,10 +29,10 @@ import { CartRepository } from '../../application/state/cart.repository';
         <a routerLink="/" class="btn btn-ghost text-xl font-bold text-soft-brown uppercase tracking-widest">Sweet Shop</a>
       </div>
       <div class="navbar-center hidden lg:flex">
-        <ul class="menu menu-horizontal px-1 gap-6">
-          <li><a routerLink="/products" class="font-medium hover:text-soft-brown uppercase tracking-wide text-sm">Produtos</a></li>
-          <li><a routerLink="/" class="font-medium hover:text-soft-brown uppercase tracking-wide text-sm">Sobre</a></li>
-          <li><a routerLink="/" class="font-medium hover:text-soft-brown uppercase tracking-wide text-sm">Contato</a></li>
+        <ul class="menu menu-horizontal px-1 gap-8">
+          <li><a routerLink="/products" class="text-sm font-bold hover:text-soft-brown uppercase tracking-widest transition-colors">Produtos</a></li>
+          <li><a routerLink="/" class="text-sm font-bold hover:text-soft-brown uppercase tracking-widest transition-colors">Sobre</a></li>
+          <li><a routerLink="/" class="text-sm font-bold hover:text-soft-brown uppercase tracking-widest transition-colors">Contato</a></li>
         </ul>
       </div>
 
@@ -99,28 +100,31 @@ import { CartRepository } from '../../application/state/cart.repository';
       <div class="p-6 overflow-y-auto h-[calc(100vh-64px)]">
         
         <!-- User Greeting -->
-        <a routerLink="/profile" (click)="closeMobileMenu()" class="flex items-center justify-between mb-8 pb-4 border-b border-gray-800 group cursor-pointer">
-          <div>
-            <div class="text-xl font-bold group-hover:text-gray-300 transition-colors">Oi, Felipe</div>
-            <div class="text-sm text-gray-400">Que bom que você voltou</div>
-          </div>
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
-        </a>
+        <ng-container *ngIf="user$ | async as user; else noUser">
+          <a routerLink="/profile" (click)="closeMobileMenu()" class="flex items-center justify-between mb-8 pb-4 border-b border-gray-800 group cursor-pointer">
+            <div>
+              <div class="text-xl font-bold group-hover:text-gray-300 transition-colors">Oi, {{ user.name }}</div>
+              <div class="text-sm text-gray-400">Que bom que você voltou</div>
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+          </a>
+        </ng-container>
+        <ng-template #noUser>
+          <a routerLink="/profile" (click)="closeMobileMenu()" class="flex items-center justify-between mb-8 pb-4 border-b border-gray-800 group cursor-pointer">
+            <div>
+              <div class="text-xl font-bold group-hover:text-gray-300 transition-colors">Olá, Visitante</div>
+              <div class="text-sm text-gray-400">Entre ou cadastre-se</div>
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+          </a>
+        </ng-template>
 
         <!-- Links -->
         <nav class="flex flex-col gap-6">
           <a routerLink="/products" (click)="closeMobileMenu()" class="text-lg font-bold uppercase tracking-wide flex justify-between items-center group">
             Produtos
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
-          </a>
-          <a routerLink="/" (click)="closeMobileMenu()" class="text-lg font-bold uppercase tracking-wide flex justify-between items-center">
-            Kits
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
-          </a>
-          <a routerLink="/" (click)="closeMobileMenu()" class="text-lg font-bold uppercase tracking-wide flex justify-between items-center">
-            Presentes
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
-          </a>
+          </a>          
           <a routerLink="/" (click)="closeMobileMenu()" class="text-lg font-bold uppercase tracking-wide">
             Sobre Nós
           </a>
@@ -131,8 +135,15 @@ import { CartRepository } from '../../application/state/cart.repository';
 
         <!-- Bottom Actions -->
         <div class="mt-12 pt-8 border-t border-gray-800 flex flex-col gap-4">
-          <button class="btn btn-outline btn-block text-white border-white hover:bg-white hover:text-black uppercase">Minha Conta</button>
-          <button class="btn btn-ghost btn-block text-gray-400 uppercase">Sair</button>
+          <ng-container *ngIf="user$ | async as user; else loginButton">
+            <button routerLink="/profile" (click)="closeMobileMenu()" class="btn btn-outline btn-block text-white border-white hover:bg-white hover:text-black uppercase">Minha Conta</button>
+            <button class="btn btn-ghost btn-block text-gray-400 uppercase">Sair</button>
+          </ng-container>
+          <ng-template #loginButton>
+            <button routerLink="/profile" (click)="closeMobileMenu()" class="btn btn-outline btn-block text-white border-white hover:bg-white hover:text-black uppercase">
+              Entrar / Cadastrar
+            </button>
+          </ng-template>
         </div>
 
       </div>
@@ -141,10 +152,15 @@ import { CartRepository } from '../../application/state/cart.repository';
 })
 export class NavbarComponent {
   count$;
+  user$;
   isMobileMenuOpen = false;
 
-  constructor(private cartRepo: CartRepository) {
+  constructor(
+    private cartRepo: CartRepository,
+    private userRepo: UserRepository
+  ) {
     this.count$ = this.cartRepo.count$;
+    this.user$ = this.userRepo.user$;
   }
 
   toggleCart() {

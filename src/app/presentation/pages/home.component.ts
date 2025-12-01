@@ -16,7 +16,7 @@ import { Observable, map, BehaviorSubject, combineLatest } from 'rxjs';
       <div class="hero-overlay bg-opacity-60 bg-black"></div>
       <div class="hero-content text-center text-neutral-content relative z-10">
         <div class="max-w-md">
-          <h1 class="mb-5 text-5xl font-bold text-cream">Sweet Shop</h1>
+          <h1 class="mb-5 text-3xl md:text-5xl font-bold text-cream">Sweet Shop</h1>
           <p class="mb-5 text-lg">Delícias artesanais feitas com amor para você.</p>
           <button routerLink="/products" class="btn btn-primary btn-lg text-white border-none bg-soft-brown hover:bg-sage">Ver Produtos</button>
         </div>
@@ -29,7 +29,7 @@ import { Observable, map, BehaviorSubject, combineLatest } from 'rxjs';
       <div class="flex justify-center border-b border-gray-200">
         <button *ngFor="let category of categories" 
                 (click)="selectedCategory = category"
-                class="px-8 py-4 text-lg font-bold uppercase tracking-widest border-b-2 transition-colors duration-300"
+                class="px-4 md:px-8 py-3 md:py-4 text-sm md:text-lg font-bold uppercase tracking-widest border-b-2 transition-colors duration-300"
                 [class.border-black]="selectedCategory === category"
                 [class.text-black]="selectedCategory === category"
                 [class.border-transparent]="selectedCategory !== category"
@@ -43,8 +43,8 @@ import { Observable, map, BehaviorSubject, combineLatest } from 'rxjs';
     <!-- Highlights Carousel (Full Width) -->
     <section class="relative group/carousel w-full mb-8 overflow-x-hidden">
       <!-- Products List -->
-      <div class="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide pl-10 pr-10 scroll-px-10 pb-3" #carousel>
-        <div *ngFor="let product of (filteredProducts$ | async)" class="min-w-[85%] sm:min-w-[50%] lg:min-w-[25%] p-2 snap-start">
+      <div class="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide pl-4 pr-4 md:pl-10 md:pr-10 scroll-px-4 md:scroll-px-10 pb-3" #carousel>
+        <div *ngFor="let product of (filteredProducts$ | async)" class="min-w-[90%] sm:min-w-[50%] lg:min-w-[25%] p-2 snap-center">
           <app-product-card [product]="product" (addToCart)="addToCart($event)"></app-product-card>
         </div>
       </div>

@@ -18,11 +18,11 @@ import { take, combineLatest } from 'rxjs';
     <div class="flex flex-col lg:flex-row min-h-screen">
 
       <!-- Left Column: Main Content -->
-      <div class="flex-1 flex flex-col p-6 lg:px-20 lg:py-12 bg-white">
+      <div class="flex-1 flex flex-col p-4 md:p-6 lg:px-20 lg:py-12 bg-white">
 
         <!-- Header & Breadcrumb -->
         <div class="mb-8">
-          <h1 class="text-4xl font-black text-black mb-4 tracking-tighter">SWEET SHOP</h1>
+          <h1 class="text-2xl md:text-4xl font-black text-black mb-4 tracking-tighter">SWEET SHOP</h1>
           <div class="text-sm flex gap-2 text-gray-500 items-center">
             <a [routerLink]="['/']" [queryParams]="{openCart: 'true'}" class="hover:text-soft-brown transition-colors">Carrinho</a>
             <span class="text-xs">></span>

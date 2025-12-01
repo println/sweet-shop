@@ -13,7 +13,7 @@ import { Subject, takeUntil } from 'rxjs';
   },
   template: `
       <!-- Header -->
-      <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-base-100">
+      <div class="p-4 md:p-6 border-b border-gray-100 flex justify-between items-center bg-base-100">
         <div class="flex items-center gap-3">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-soft-brown" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
@@ -28,7 +28,7 @@ import { Subject, takeUntil } from 'rxjs';
       </div>
 
       <!-- Items -->
-      <div class="flex-1 overflow-y-auto p-6">
+      <div class="flex-1 overflow-y-auto p-4 md:p-6">
         <div *ngIf="(items$ | async)?.length === 0" class="flex flex-col items-center justify-center h-full text-gray-400">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mb-4 opacity-20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
@@ -38,7 +38,7 @@ import { Subject, takeUntil } from 'rxjs';
 
         <div *ngFor="let item of items$ | async" class="flex gap-4 mb-6 pb-6 border-b border-gray-50 last:border-0">
           <!-- Product Image -->
-          <div class="w-24 h-24 flex-shrink-0 bg-gray-50 rounded-md overflow-hidden">
+          <div class="w-20 h-20 flex-shrink-0 bg-gray-50 rounded-md overflow-hidden">
             <img [src]="item.product.image" [alt]="item.product.name" class="w-full h-full object-cover" />
           </div>
 
@@ -75,7 +75,7 @@ import { Subject, takeUntil } from 'rxjs';
       </div>
 
       <!-- Footer -->
-      <div class="p-6 border-t border-gray-100 bg-base-100">
+      <div class="p-4 md:p-6 border-t border-gray-100 bg-base-100">
         <!-- Delivery Estimate (Static for UI match) -->
         <div class="flex justify-between items-center py-3 border-b border-gray-50 mb-4 cursor-pointer group">
           <span class="text-sm font-bold text-soft-brown">PRAZO DE ENTREGA</span>

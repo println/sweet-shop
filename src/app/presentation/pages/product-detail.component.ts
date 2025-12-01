@@ -25,7 +25,7 @@ import { Observable, map, switchMap, of } from 'rxjs';
         
         <!-- Mobile Header (Title, Badges, Reviews) -->
         <div class="lg:hidden">
-          <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ product.name }}</h1>
+          <h1 class="text-2xl font-bold text-gray-900 mb-2">{{ product.name }}</h1>
           
           <div class="flex items-center gap-4 mb-4">
             <div class="flex items-center gap-1">
@@ -99,7 +99,7 @@ import { Observable, map, switchMap, of } from 'rxjs';
             <div class="flex flex-col mb-6">
               <div class="flex items-center gap-3">
                 <span *ngIf="product.originalPrice" class="text-lg text-gray-400 line-through">R$ {{ product.originalPrice.toFixed(2) }}</span>
-                <span class="text-3xl font-bold text-soft-brown">R$ {{ product.price.toFixed(2) }}</span>
+                <span class="text-2xl md:text-3xl font-bold text-soft-brown">R$ {{ product.price.toFixed(2) }}</span>
                 <span class="text-sm text-gray-500">no pix</span>
               </div>
               <p class="text-xs text-red-700 font-medium mt-1">com cupom <span class="underline">BF2025</span></p>
