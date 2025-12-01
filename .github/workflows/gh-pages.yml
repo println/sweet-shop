@@ -1,10 +1,36 @@
-            - name: Angular Full CI
-  # You may pin to the exact commit or the version.
-  # uses: colbyhill21/angular-full-ci@a3489087f6a715db335078f999c01d422a254a6c
-  uses: colbyhill21/angular-full-ci@v1.0
-  with:
-    # Command to run tests on your project, do not prepend with "npm", it is already included.
-    testcommand: 
-    # Set to true in order to run mocha tests. This option will install mocha on the image.
-    mocha: # optional
-          
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build -- --configuration production --base-href /sweet-shop/
+
+      - name: Copy index.html to 404.html
+        run: cp dist/sweet-shop/browser/index.html dist/sweet-shop/browser/404.html
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: dist/sweet-shop/browser
