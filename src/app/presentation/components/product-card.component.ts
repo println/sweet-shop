@@ -10,7 +10,7 @@ import { Product } from '../../domain/models/product.model';
   template: `
     <div class="group/card flex flex-col h-full">
       <!-- Image -->
-      <div class="relative aspect-[4/5] overflow-hidden bg-gray-100 mb-3 cursor-pointer" [routerLink]="['/products', product.id]">
+      <div class="relative aspect-square overflow-hidden bg-gray-100 mb-3 cursor-pointer rounded-[4px]" [routerLink]="['/products', product.id]">
         <img [src]="product.image" (error)="handleImageError($event)" [alt]="product.name" class="w-full h-full object-cover transform group-hover/card:scale-105 transition-transform duration-700 ease-out" />
         
         <!-- Badges -->

@@ -8,7 +8,7 @@ import { CartRepository } from '../../application/state/cart.repository';
   standalone: true,
   imports: [CommonModule, RouterLink],
   template: `
-    <div class="navbar bg-base-100 shadow-sm px-4 md:px-8">
+    <div class="navbar bg-base-100 shadow-sm px-4 md:px-8 fixed top-0 left-0 right-0 z-50 w-full">
       <div class="navbar-start">
         <div class="dropdown">
           <label tabindex="0" class="btn btn-ghost lg:hidden">

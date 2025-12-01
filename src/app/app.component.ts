@@ -16,7 +16,7 @@ import { filter, map, startWith } from 'rxjs/operators';
     <div class="drawer drawer-end">
       <input id="cart-drawer" type="checkbox" class="drawer-toggle" [checked]="cartRepo.isOpen$ | async" (change)="toggleCart()" />
       
-      <div class="drawer-content flex flex-col min-h-screen bg-cream">
+      <div class="drawer-content flex flex-col min-h-screen bg-cream pt-16">
         <app-navbar *ngIf="showLayout$ | async"></app-navbar>
         <main class="flex-grow">
           <router-outlet></router-outlet>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ProductCardComponent } from '../components/product-card.component';
@@ -24,9 +24,9 @@ import { Observable, map, BehaviorSubject, combineLatest } from 'rxjs';
       <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" alt="Hero Background" class="absolute inset-0 w-full h-full object-cover -z-10" />
     </div>
 
-    <section class="container mx-auto p-4 mb-12">
-      <!-- Tabs -->
-      <div class="flex justify-center mb-8 border-b border-gray-200">
+    <!-- Tabs Section -->
+    <section class="mx-[2em] p-4 mb-8">
+      <div class="flex justify-center border-b border-gray-200">
         <button *ngFor="let category of categories" 
                 (click)="selectedCategory = category"
                 class="px-8 py-4 text-lg font-bold uppercase tracking-widest border-b-2 transition-colors duration-300"
@@ -38,34 +38,36 @@ import { Observable, map, BehaviorSubject, combineLatest } from 'rxjs';
           {{ category }}
         </button>
       </div>
+    </section>
 
-      <!-- Carousel -->
-      <div class="relative group/carousel">
-        <!-- Products Grid (Carousel view) -->
-        <div class="flex overflow-x-auto gap-6 pb-8 snap-x snap-mandatory scrollbar-hide" #carousel>
-          <div *ngFor="let product of (filteredProducts$ | async)" class="w-64 md:w-72 flex-shrink-0 snap-start">
-            <app-product-card [product]="product" (addToCart)="addToCart($event)"></app-product-card>
-          </div>
+    <!-- Highlights Carousel (Full Width) -->
+    <section class="relative group/carousel w-full mb-8 overflow-x-hidden">
+      <!-- Products List -->
+      <div class="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide pl-10 pr-10 scroll-px-10 pb-3" #carousel>
+        <div *ngFor="let product of (filteredProducts$ | async)" class="min-w-[85%] sm:min-w-[50%] lg:min-w-[25%] p-2 snap-start">
+          <app-product-card [product]="product" (addToCart)="addToCart($event)"></app-product-card>
         </div>
-        
-        <!-- Navigation Buttons (Mock functionality for visual completeness) -->
-        <button (click)="scrollLeft(carousel)" class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 bg-white p-3 rounded-full shadow-lg opacity-0 group-hover/carousel:opacity-100 transition-opacity disabled:opacity-0">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
-        </button>
-        <button (click)="scrollRight(carousel)" class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 bg-white p-3 rounded-full shadow-lg opacity-0 group-hover/carousel:opacity-100 transition-opacity disabled:opacity-0">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
-        </button>
       </div>
+      
+      <!-- Navigation Buttons -->
+      <button (click)="scrollLeft(carousel)" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-3 rounded-full shadow-lg opacity-0 group-hover/carousel:opacity-100 transition-opacity disabled:opacity-0 z-10">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+      </button>
+      <button (click)="scrollRight(carousel)" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-3 rounded-full shadow-lg opacity-0 group-hover/carousel:opacity-100 transition-opacity disabled:opacity-0 z-10">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+      </button>
+    </section>
 
-      <div class="text-center mt-8">
-        <button routerLink="/products" [queryParams]="{category: selectedCategory}" class="btn btn-wide bg-black text-white hover:bg-gray-800 border-none uppercase tracking-widest">
-          SHOP {{ selectedCategory }}
-        </button>
-      </div>
+    <!-- Button Section -->
+    <section class="container mx-auto p-4 mb-12 text-center">
+      <button routerLink="/products" [queryParams]="{category: selectedCategory}" class="btn btn-wide bg-black text-white hover:bg-gray-800 border-none uppercase tracking-widest">
+        SHOP {{ selectedCategory }}
+      </button>
     </section>
   `
 })
 export class HomeComponent implements OnInit {
+  @ViewChild('carousel') carousel!: ElementRef<HTMLElement>;
   categories = ['Bolos', 'Doces', 'Especiais'];
   _selectedCategory = 'Bolos';
 
@@ -106,6 +108,9 @@ export class HomeComponent implements OnInit {
   set selectedCategory(value: string) {
     this._selectedCategory = value;
     this.selectedCategorySubject.next(value);
+    if (this.carousel && this.carousel.nativeElement) {
+      this.carousel.nativeElement.scrollTo({ left: 0, behavior: 'smooth' });
+    }
   }
 
   addToCart(product: Product) {
@@ -113,10 +118,18 @@ export class HomeComponent implements OnInit {
   }
 
   scrollLeft(element: HTMLElement) {
-    element.scrollBy({ left: -300, behavior: 'smooth' });
+    const item = element.firstElementChild as HTMLElement;
+    if (item) {
+      element.scrollBy({ left: -item.clientWidth, behavior: 'smooth' });
+    }
   }
 
   scrollRight(element: HTMLElement) {
-    element.scrollBy({ left: 300, behavior: 'smooth' });
+    const item = element.firstElementChild as HTMLElement;
+    if (item) {
+      element.scrollBy({ left: item.clientWidth, behavior: 'smooth' });
+    }
   }
+
+
 }
