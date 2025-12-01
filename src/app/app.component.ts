@@ -14,9 +14,9 @@ import { filter, map, startWith } from 'rxjs/operators';
   imports: [CommonModule, RouterOutlet, NavbarComponent, FooterComponent, CartComponent],
   template: `
     <div class="drawer drawer-end">
-      <input id="cart-drawer" type="checkbox" class="drawer-toggle" [checked]="cartRepo.isOpen$ | async" (change)="toggleCart()" />
+      <input id="cart-drawer" type="checkbox" class="drawer-toggle" [checked]="cartRepo.isOpen$ | async" />
       
-      <div class="drawer-content flex flex-col min-h-screen bg-cream pt-16">
+      <div class="drawer-content flex flex-col min-h-screen bg-base-100" [class.pt-16]="showLayout$ | async">
         <app-navbar *ngIf="showLayout$ | async"></app-navbar>
         <main class="flex-grow">
           <router-outlet></router-outlet>
@@ -25,7 +25,7 @@ import { filter, map, startWith } from 'rxjs/operators';
       </div> 
       
       <div class="drawer-side z-50">
-        <label for="cart-drawer" aria-label="close sidebar" class="drawer-overlay bg-black/60"></label>
+        <label for="cart-drawer" aria-label="close sidebar" class="drawer-overlay bg-black/60" (click)="closeCart()"></label>
         <app-cart></app-cart>
       </div>
     </div>

@@ -1,8 +1,78 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@plugin "daisyui" {
+    themes:
+        chocolate --default,
+        light,
+        dark,
+        cupcake,
+        bumblebee,
+        emerald,
+        corporate,
+        synthwave,
+        retro,
+        cyberpunk,
+        valentine,
+        halloween,
+        garden,
+        forest,
+        aqua,
+        lofi,
+        pastel,
+        fantasy,
+        wireframe,
+        black,
+        luxury,
+        dracula,
+        cmyk,
+        autumn,
+        business,
+        acid,
+        lemonade,
+        night,
+        coffee,
+        winter,
+        dim,
+        nord,
+        sunset,
+        caramellatte,
+        abyss,
+        silk;
+}
+
+/* Custom Theme: Chocolate */
+:root[data-theme="chocolate"] {
+    color-scheme: light;
+    --color-base-100: #fefdfc;
+    --color-base-200: oklch(98% 0.016 73.684);
+    --color-base-300: #ebd7c3;
+    --color-base-content: #3a170d;
+    --color-primary: #3a170d;
+    --color-primary-content: #f6edce;
+    --color-secondary: #c3883d;
+    --color-secondary-content: oklch(96% 0.059 95.617);
+    --color-accent: #f6edce;
+    --color-accent-content: #3a170d;
+    --color-neutral: #5c2f27;
+    --color-neutral-content: oklch(96% 0.059 95.617);
+    --color-info: oklch(74% 0.16 232.661);
+    --color-info-content: oklch(98% 0.019 200.873);
+    --color-success: oklch(76% 0.177 163.223);
+    --color-success-content: oklch(37% 0.077 168.94);
+    --color-warning: oklch(82% 0.189 84.429);
+    --color-warning-content: oklch(41% 0.112 45.904);
+    --color-error: oklch(71% 0.194 13.428);
+    --color-error-content: oklch(27% 0.105 12.094);
+    --radius-selector: 1rem;
+    --radius-field: 1rem;
+    --radius-box: 0.25rem;
+    --size-selector: 0.28125rem;
+    --size-field: 0.28125rem;
+    --border: 1.5px;
+    --depth: 0;
+    --noise: 1;
+}
 
 body {
     font-family: 'Inter', sans-serif;
-    @apply bg-cream text-gray-800;
 }

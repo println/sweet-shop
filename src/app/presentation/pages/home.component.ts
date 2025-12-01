@@ -12,29 +12,28 @@ import { Observable, map, BehaviorSubject, combineLatest } from 'rxjs';
   standalone: true,
   imports: [CommonModule, RouterLink, ProductCardComponent],
   template: `
-    <div class="hero min-h-[60vh] w-full relative mb-12">
-      <div class="hero-overlay bg-opacity-60 bg-black"></div>
+    <div class="hero min-h-[60vh] w-full relative mb-12">      
       <div class="hero-content text-center text-neutral-content relative z-10">
         <div class="max-w-md">
-          <h1 class="mb-5 text-3xl md:text-5xl font-bold text-cream">Sweet Shop</h1>
+          <h1 class="mb-5 text-3xl md:text-5xl font-bold text-primary">Sweet Shop</h1>
           <p class="mb-5 text-lg">Delícias artesanais feitas com amor para você.</p>
-          <button routerLink="/products" class="btn btn-primary btn-lg text-white border-none bg-soft-brown hover:bg-sage">Ver Produtos</button>
+          <button routerLink="/products" class="btn btn-primary btn-lg text-primary-content border-none hover:bg-primary-focus">Ver Produtos</button>
         </div>
       </div>
-      <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" alt="Hero Background" class="absolute inset-0 w-full h-full object-cover -z-10" />
+      <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" alt="Hero Background" class="absolute inset-0 w-full h-full object-cover" />              
+      <div class="hero-overlay bg-opacity-60 bg-black z-0"></div>
     </div>
 
     <!-- Tabs Section -->
     <section class="mx-[2em] p-4 mb-8">
-      <div class="flex justify-center border-b border-gray-200">
+      <div class="flex justify-center">
         <button *ngFor="let category of categories" 
                 (click)="selectedCategory = category"
                 class="px-4 md:px-8 py-3 md:py-4 text-sm md:text-lg font-bold uppercase tracking-widest border-b-2 transition-colors duration-300"
-                [class.border-black]="selectedCategory === category"
-                [class.text-black]="selectedCategory === category"
+                [class.border-primary]="selectedCategory === category"
+                [class.text-primary]="selectedCategory === category"
                 [class.border-transparent]="selectedCategory !== category"
-                [class.text-gray-400]="selectedCategory !== category"
-                [class.hover:text-gray-600]="selectedCategory !== category">
+                [class.hover:text-primary]="selectedCategory !== category">
           {{ category }}
         </button>
       </div>
@@ -50,17 +49,17 @@ import { Observable, map, BehaviorSubject, combineLatest } from 'rxjs';
       </div>
       
       <!-- Navigation Buttons -->
-      <button (click)="scrollLeft(carousel)" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-3 rounded-full shadow-lg opacity-0 group-hover/carousel:opacity-100 transition-opacity disabled:opacity-0 z-10">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+      <button (click)="scrollLeft(carousel)" class="absolute left-4 top-1/2 -translate-y-1/2 bg-base-100/80 hover:bg-base-100 p-3 rounded-full shadow-lg opacity-0 group-hover/carousel:opacity-100 transition-opacity disabled:opacity-0 z-10">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-base-content" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
       </button>
-      <button (click)="scrollRight(carousel)" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-3 rounded-full shadow-lg opacity-0 group-hover/carousel:opacity-100 transition-opacity disabled:opacity-0 z-10">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+      <button (click)="scrollRight(carousel)" class="absolute right-4 top-1/2 -translate-y-1/2 bg-base-100/80 hover:bg-base-100 p-3 rounded-full shadow-lg opacity-0 group-hover/carousel:opacity-100 transition-opacity disabled:opacity-0 z-10">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-base-content" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
       </button>
     </section>
 
     <!-- Button Section -->
     <section class="container mx-auto p-4 mb-12 text-center">
-      <button routerLink="/products" [queryParams]="{category: selectedCategory}" class="btn btn-wide bg-black text-white hover:bg-gray-800 border-none uppercase tracking-widest">
+      <button routerLink="/products" [queryParams]="{category: selectedCategory}" class="btn btn-wide btn-primary hover:bg-primary-focus border-none uppercase tracking-widest text-primary-content">
         SHOP {{ selectedCategory }}
       </button>
     </section>

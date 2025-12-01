@@ -9,7 +9,7 @@ import { UserRepository } from '../../application/state/user.repository';
   imports: [CommonModule, ReactiveFormsModule],
   template: `
     <div class="container mx-auto p-4 max-w-2xl bg-base-100 rounded-xl shadow-lg">
-      <h2 class="text-3xl font-bold mb-8 text-soft-brown text-center">Meu Perfil</h2>
+      <h2 class="text-3xl font-bold mb-8 text-primary text-center">Meu Perfil</h2>
 
       <div *ngIf="userRepo.user$ | async as user; else noUser">
         <div class="mb-8">
@@ -27,7 +27,7 @@ import { UserRepository } from '../../application/state/user.repository';
       <div class="divider">Gerenciamento de Dados</div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <button class="btn btn-outline btn-primary" (click)="exportData()">Exportar Dados</button>
+        <button class="btn btn-outline btn-secondary" (click)="exportData()">Exportar Dados</button>
         <div class="form-control">
           <label class="btn btn-outline btn-secondary cursor-pointer">
             Importar Dados
