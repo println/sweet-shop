@@ -12,7 +12,7 @@ import { ProductCardComponent } from '../components/product-card.component';
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule, ProductCardComponent],
+  imports: [CommonModule, FormsModule, ProductCardComponent],
   template: `
     <div class="w-full mx-auto p-4 md:p-8 flex flex-col md:flex-row gap-8 min-h-screen relative">
       

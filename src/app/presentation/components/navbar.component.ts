@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CartRepository } from '../../application/state/cart.repository';
 import { UserRepository } from '../../application/state/user.repository';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, RouterLinkActive],
   template: `
     <!-- Navbar -->
     <div class="navbar bg-base-100 shadow-sm px-0 md:px-8 fixed top-0 left-0 right-0 z-50 w-full h-16">
@@ -30,9 +30,9 @@ import { UserRepository } from '../../application/state/user.repository';
       </div>
       <div class="navbar-center hidden lg:flex">
         <ul class="menu menu-horizontal px-1 gap-8">
-          <li><a routerLink="/products" class="text-sm font-bold hover:text-primary uppercase tracking-widest transition-colors">Produtos</a></li>
-          <li><a routerLink="/" class="text-sm font-bold hover:text-primary uppercase tracking-widest transition-colors">Sobre</a></li>
-          <li><a routerLink="/" class="text-sm font-bold hover:text-primary uppercase tracking-widest transition-colors">Contato</a></li>
+          <li><a routerLink="/products" class="text-sm font-bold hover:text-primary uppercase tracking-widest transition-colors" routerLinkActive="bg-secondary text-secondary-content hover:text-secondary-content">Produtos</a></li>
+          <li><a routerLink="/aboutus" class="text-sm font-bold hover:text-primary uppercase tracking-widest transition-colors" routerLinkActive="bg-secondary text-secondary-content hover:text-secondary-content">Sobre</a></li>
+          <li><a routerLink="/contact" class="text-sm font-bold hover:text-primary uppercase tracking-widest transition-colors" routerLinkActive="bg-secondary text-secondary-content hover:text-secondary-content">Contato</a></li>
         </ul>
       </div>
 
