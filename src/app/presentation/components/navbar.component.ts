@@ -37,7 +37,7 @@ import { UserRepository } from '../../application/state/user.repository';
       </div>
 
       <!-- Navbar End: Icons -->
-      <div class="navbar-end flex gap-2 pr-4 md:pr-0">
+      <div class="navbar-end flex gap-0 pr-4 md:pr-0">
         <!-- Theme Dropdown -->
         <div class="dropdown dropdown-end">
           <div tabindex="0" role="button" class="btn btn-ghost btn-circle">
@@ -52,10 +52,10 @@ import { UserRepository } from '../../application/state/user.repository';
           </ul>
         </div>
 
-        <!-- Search Icon (Mock) -->
+        <!-- Search Icon (Mock) 
         <button class="btn btn-ghost btn-circle">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-        </button>
+        </button>-->
 
         <!-- User Profile (Desktop Only) -->
         <div class="dropdown dropdown-end hidden lg:block">

@@ -305,6 +305,7 @@ export class ProductsComponent implements OnInit {
     this.filteredProducts$.subscribe(products => {
       this.currentPage = 1;
       this.updateDisplayedProducts(products);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   }
 

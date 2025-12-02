@@ -41,12 +41,14 @@ import { Product } from '../../domain/models/product.model';
           <span>{{ product.reviews || 0 }} reviews</span>
         </div>
 
-        <h3 class="font-medium text-base-content text-base leading-tight group-hover:underline decoration-1 underline-offset-2 cursor-pointer" [routerLink]="['/products', product.id]">{{ product.name }}</h3>
+        <h3 class="font-medium text-base-content text-base leading-tight group-hover:underline decoration-1 underline-offset-2 cursor-pointer line-clamp-2" [routerLink]="['/products', product.id]" [title]="product.name">{{ product.name }}</h3>
         
-        <div class="flex items-center gap-2 mt-1">
-          <span *ngIf="product.originalPrice" class="text-sm text-base-content/40 line-through">R$ {{ product.originalPrice.toFixed(2) }}</span>
-          <span class="text-base font-bold text-primary">R$ {{ product.price.toFixed(2) }}</span>
-          <span class="text-xs text-base-content/60 font-normal">no pix</span>
+        <div class="flex flex-col mt-1">
+          <span *ngIf="product.originalPrice" class="text-xs text-base-content/40 line-through">R$ {{ product.originalPrice.toFixed(2) }}</span>
+          <div class="flex items-baseline gap-1">
+            <span class="text-lg font-bold text-primary">R$ {{ product.price.toFixed(2) }}</span>
+            <span class="text-[10px] text-base-content/60 font-normal">pix</span>
+          </div>
         </div>
         
         <div class="flex gap-2 mt-2">

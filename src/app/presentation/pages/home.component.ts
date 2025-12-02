@@ -6,11 +6,20 @@ import { ProductsRepository } from '../../application/state/products.repository'
 import { CartRepository } from '../../application/state/cart.repository';
 import { Product } from '../../domain/models/product.model';
 import { Observable, map, BehaviorSubject, combineLatest } from 'rxjs';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [CommonModule, RouterLink, ProductCardComponent],
+  animations: [
+    trigger('fade', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(10px)' }),
+        animate('300ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
+      ])
+    ])
+  ],
   template: `
     <div class="hero min-h-[60vh] w-full relative mb-12">      
       <div class="hero-content text-center text-neutral-content relative z-10">
@@ -29,12 +38,16 @@ import { Observable, map, BehaviorSubject, combineLatest } from 'rxjs';
       <div class="flex justify-center">
         <button *ngFor="let category of categories" 
                 (click)="selectedCategory = category"
-                class="px-4 md:px-8 py-3 md:py-4 text-sm md:text-lg font-bold uppercase tracking-widest border-b-2 transition-colors duration-300"
+                class="px-4 md:px-8 pt-3 md:pt-4 text-sm md:text-lg uppercase tracking-widest transition-all duration-50 
+                border-b border-b-[1px] text-base-content pb-[4px] cursor-pointer"
+                [class.font-bold]="selectedCategory === category"
+                [class.pb-[4px]]="selectedCategory != category"
+                [class.pb-[1px]]="selectedCategory === category"
+                [class.border-b-[4px]]="selectedCategory === category"
                 [class.border-primary]="selectedCategory === category"
                 [class.text-primary]="selectedCategory === category"
-                [class.border-transparent]="selectedCategory !== category"
-                [class.hover:text-primary]="selectedCategory !== category">
-          {{ category }}
+                >
+          <span class="inline-block pb-3">{{ category }}</span>
         </button>
       </div>
     </section>
@@ -43,7 +56,7 @@ import { Observable, map, BehaviorSubject, combineLatest } from 'rxjs';
     <section class="relative group/carousel w-full mb-8 overflow-x-hidden">
       <!-- Products List -->
       <div class="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide pl-4 pr-4 md:pl-10 md:pr-10 scroll-px-4 md:scroll-px-10 pb-3" #carousel>
-        <div *ngFor="let product of (filteredProducts$ | async)" class="min-w-[90%] sm:min-w-[50%] lg:min-w-[25%] p-2 snap-center">
+        <div *ngFor="let product of (filteredProducts$ | async)" [@fade] class="min-w-[90%] sm:min-w-[50%] lg:min-w-[25%] p-2 snap-center">
           <app-product-card [product]="product" (addToCart)="addToCart($event)"></app-product-card>
         </div>
       </div>
