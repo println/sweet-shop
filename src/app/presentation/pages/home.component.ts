@@ -24,13 +24,13 @@ import { trigger, transition, style, animate } from '@angular/animations';
     <div class="hero min-h-[60vh] w-full relative mb-12">      
       <div class="hero-content text-center text-neutral-content relative z-10">
         <div class="max-w-md">
-          <h1 class="mb-5 text-3xl md:text-5xl font-bold text-primary">Sweet Shop</h1>
+          <h1 class="mb-5 text-3xl md:text-5xl font-bold bg-accent text-accent-content inline-block p-3">Sweet Shop</h1>
           <p class="mb-5 text-lg">Delícias artesanais feitas com amor para você.</p>
           <button routerLink="/products" class="btn btn-primary btn-lg text-primary-content border-none hover:bg-primary-focus">Ver Produtos</button>
         </div>
       </div>
-      <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" alt="Hero Background" class="absolute inset-0 w-full h-full object-cover" />              
-      <div class="hero-overlay bg-opacity-60 bg-black z-0"></div>
+      <img src="https://images.unsplash.com/photo-1550617931-e17a7b70dce2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" alt="Hero Background" class="absolute inset-0 w-full h-full object-cover" />              
+      <div class="absolute inset-0 bg-black/25 z-0"></div>
     </div>
 
     <!-- Tabs Section -->

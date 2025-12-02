@@ -83,7 +83,7 @@ import { UserRepository } from '../../application/state/user.repository';
     </div>
 
     <!-- Full Screen Mobile Menu Overlay -->
-    <div class=" invert fixed inset-0 z-[60] bg-base-100 text-base-content transition-transform duration-300 ease-in-out lg:hidden"
+    <div class="invert fixed inset-0 z-[60] bg-base-100 text-base-content transition-transform duration-300 ease-in-out lg:hidden"
          [class.translate-x-0]="isMobileMenuOpen"
          [class.-translate-x-full]="!isMobileMenuOpen">
       
