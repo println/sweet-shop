@@ -168,6 +168,8 @@ export class NavbarComponent {
   isMobileMenuOpen = false;
 
   themes = [
+    'mariam-gourmet',
+    'mariam-gourmet-dark',
     'chocolate',
     'abyss', 'acid', 'aqua', 'autumn', 'black', 'bumblebee', 'business', 'caramellatte', 'cmyk', 'coffee', 'corporate', 'cupcake', 'cyberpunk', 'dark', 'dim', 'dracula', 'emerald', 'fantasy', 'forest', 'garden', 'halloween', 'lemonade', 'light', 'lofi', 'luxury', 'night', 'nord', 'pastel', 'retro', 'silk', 'sunset', 'synthwave', 'valentine', 'winter', 'wireframe'
   ];

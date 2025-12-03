@@ -2,7 +2,9 @@
 
 @plugin "daisyui" {
     themes:
-        chocolate --default,
+        mariam-gourmet --default,
+        mariam-gourmet-dark,
+        chocolate,
         light,
         dark,
         cupcake,
@@ -72,6 +74,89 @@
     --depth: 0;
     --noise: 1;
 }
+
+:root[data-theme="mariam-gourmet"] {
+    color-scheme: light;
+    --color-base-100: oklch(98% 0.015 75);
+    --color-base-200: oklch(95% 0.030 75);
+    --color-base-300: oklch(90% 0.045 75);
+    --color-base-content: oklch(35% 0.08 40);
+
+    /* Terracota – Primária */
+    --color-primary: oklch(65% 0.16 40);
+    --color-primary-content: oklch(98% 0.015 75);
+
+    /* Abóbora – Secundária */
+    --color-secondary: oklch(70% 0.20 55);
+    --color-secondary-content: oklch(15% 0.05 40);
+
+    /* Marrom artesanal – Accent */
+    --color-accent: oklch(50% 0.12 40);
+    --color-accent-content: oklch(98% 0.015 75);
+
+    /* Marrom profundo – Neutral */
+    --color-neutral: oklch(32% 0.08 35);
+    --color-neutral-content: oklch(95% 0.03 75);
+
+    /* Estados */
+    --color-info: oklch(65% 0.12 240);
+    --color-info-content: oklch(98% 0.015 75);
+
+    --color-success: oklch(60% 0.14 150);
+    --color-success-content: oklch(98% 0.015 75);
+
+    --color-warning: oklch(78% 0.18 70);
+    --color-warning-content: oklch(30% 0.08 45);
+
+    --color-error: oklch(60% 0.20 25);
+    --color-error-content: oklch(20% 0.10 25);
+
+    /* Bordas e raios */
+    --radius-selector: 1rem;
+    --radius-field: 1rem;
+    --radius-box: 0.25rem;
+    --size-selector: 0.28125rem;
+    --size-field: 0.28125rem;
+    --border: 1.5px;
+    --depth: 0;
+    --noise: 0;
+}
+
+:root[data-theme="mariam-gourmet-dark"] {
+    color-scheme: dark;
+
+    --color-primary: #FF8A2C;
+    --color-primary-content: #1E1205;
+
+    --color-secondary: #A8744F;
+    --color-secondary-content: #1C140F;
+
+    --color-accent: #C68B59;
+    --color-accent-content: #1B120A;
+
+    --color-neutral: #2A2019;
+    --color-neutral-content: #E8D7C5;
+
+    --color-base-100: #1D1815;
+    --color-base-200: #1A1613;
+    --color-base-300: #171310;
+    --color-base-content: #EAE0D7;
+
+    --color-info: #7BD0EA;
+    --color-success: #8ED49B;
+    --color-warning: #F5C36A;
+    --color-error: #E98585;
+
+    --radius-selector: 1rem;
+    --radius-field: 1rem;
+    --radius-box: 0.25rem;
+    --size-selector: 0.28125rem;
+    --size-field: 0.28125rem;
+    --border: 1.5px;
+    --depth: 0;
+    --noise: 0;
+}
+
 
 body {
     font-family: 'Inter', sans-serif;
