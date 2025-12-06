@@ -66,7 +66,7 @@ import { ROUTES } from '../../config/routes.config';
         </nav>
       </footer>
     </div>
-    <div class="bg-neutral-900 text-neutral-content">
+    <div class="bg-neutral text-neutral-content">
       <footer class="footer footer-center p-4 max-w-7xl mx-auto">
         <aside>
           <p>{{ appSettings.layout.footer.copyrightText }} {{ appSettings.storeName }} - {{ currentYear }}</p>
