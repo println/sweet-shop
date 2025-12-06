@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Cart } from '../../domain/models/cart.model';
 import { User } from '../../domain/models/user.model';
+import { AppSettings } from '../../config/app.config';
 
 @Injectable({
     providedIn: 'root'
 })
 export class WhatsAppService {
-    private readonly PHONE_NUMBER = '5511999999999'; // Placeholder
 
     generateMessage(cart: Cart, user: User): string {
-        let message = `*Novo Pedido - Sweet Shop*\n\n`;
+        let message = `*Novo Pedido - ${AppSettings.storeName}*\n\n`;
         message += `*Cliente:* ${user.name}\n`;
         message += `*Endereço:* ${user.address.street}, ${user.address.number} - ${user.address.neighborhood}, ${user.address.city}/${user.address.state}\n`;
         if (user.address.complement) {
@@ -28,6 +28,6 @@ export class WhatsAppService {
 
     openWhatsApp(cart: Cart, user: User): void {
         const message = this.generateMessage(cart, user);
-        window.open(`https://wa.me/${this.PHONE_NUMBER}?text=${message}`, '_blank');
+        window.open(`https://wa.me/${AppSettings.contact.whatsapp}?text=${message}`, '_blank');
     }
 }

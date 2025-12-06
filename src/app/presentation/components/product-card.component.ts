@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { Product } from '../../domain/models/product.model';
+import { ROUTES } from '../../config/routes.config';
 
 @Component({
   selector: 'app-product-card',
@@ -10,7 +11,7 @@ import { Product } from '../../domain/models/product.model';
   template: `
     <div class="group/card flex flex-col h-full">
       <!-- Image -->
-      <div class="relative aspect-square overflow-hidden bg-base-200 mb-3 cursor-pointer rounded-[4px]" [routerLink]="['/products', product.id]">
+      <div class="relative aspect-square overflow-hidden bg-base-200 mb-3 cursor-pointer rounded-[4px]" [routerLink]="[routes.products.path, product.id]">
         <img [src]="product.image" (error)="handleImageError($event)" [alt]="product.name" class="w-full h-full object-cover transform group-hover/card:scale-105 transition-transform duration-700 ease-out" />
         
         <!-- Badges -->
@@ -41,7 +42,7 @@ import { Product } from '../../domain/models/product.model';
           <span>{{ product.reviews || 0 }} reviews</span>
         </div>
 
-        <h3 class="font-medium text-base-content text-base leading-tight group-hover:underline decoration-1 underline-offset-2 cursor-pointer line-clamp-2" [routerLink]="['/products', product.id]" [title]="product.name">{{ product.name }}</h3>
+        <h3 class="font-medium text-base-content text-base leading-tight group-hover:underline decoration-1 underline-offset-2 cursor-pointer line-clamp-2" [routerLink]="[routes.products.path, product.id]" [title]="product.name">{{ product.name }}</h3>
         
         <div class="flex flex-col mt-1">
           <span *ngIf="product.originalPrice" class="text-xs text-base-content/40 line-through">R$ {{ product.originalPrice.toFixed(2) }}</span>
@@ -61,6 +62,7 @@ import { Product } from '../../domain/models/product.model';
   `
 })
 export class ProductCardComponent {
+  routes = ROUTES;
   @Input({ required: true }) product!: Product;
   @Output() addToCart = new EventEmitter<Product>();
 

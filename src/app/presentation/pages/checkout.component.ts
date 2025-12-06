@@ -9,6 +9,8 @@ import { WhatsAppService } from '../../infrastructure/services/whatsapp.service'
 import { User } from '../../domain/models/user.model';
 import { Cart } from '../../domain/models/cart.model';
 import { take, combineLatest } from 'rxjs';
+import { AppSettings } from '../../config/app.config';
+import { ROUTES } from '../../config/routes.config';
 
 @Component({
   selector: 'app-checkout',
@@ -19,10 +21,10 @@ import { take, combineLatest } from 'rxjs';
       <!-- Left Column: Main Content -->
       <div class="flex-1 flex flex-col p-4 md:p-6 lg:px-20 lg:py-12 bg-base-100 items-center lg:items-end">
         <div class="w-full max-w-xl">
-          <h1 class="mb-5 text-3xl font-bold text-primary">Sweet Shop</h1>          
+          <h1 class="mb-5 text-3xl font-bold text-primary">{{ appSettings.storeName }}</h1>          
           <!-- Header / Breadcrumbs -->
           <div class="flex items-center gap-2 text-sm text-base-content/60 mb-8">
-            <a [routerLink]="['/']" [queryParams]="{openCart: 'true'}" class="hover:text-primary transition-colors">Carrinho</a>
+            <a [routerLink]="routes.home.path" [queryParams]="{openCart: 'true'}" class="hover:text-primary transition-colors">Carrinho</a>
             <span class="text-xs">></span>
             <span
               [class.font-bold]="step === 1"
@@ -44,7 +46,7 @@ import { take, combineLatest } from 'rxjs';
                 <h2 class="text-xl font-bold text-primary mb-4">Contato</h2>
                 <div class="flex justify-between items-center text-sm mb-4">
                   <span class="text-base-content/70">{{ (userRepo.user$ | async)?.name || 'Visitante' }}</span>
-                  <a routerLink="/login" class="link link-hover text-primary">Sair</a>
+                  <a [routerLink]="routes.profile.path" class="link link-hover text-primary">Sair</a>
                 </div>
               </div>
 
@@ -119,7 +121,7 @@ import { take, combineLatest } from 'rxjs';
 
                   <!-- Actions -->
                   <div class="flex justify-between items-center mt-6">
-                    <a [routerLink]="['/']" [queryParams]="{openCart: 'true'}" class="flex items-center gap-2 text-sm text-primary hover:underline">
+                    <a [routerLink]="routes.home.path" [queryParams]="{openCart: 'true'}" class="flex items-center gap-2 text-sm text-primary hover:underline">
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
                       </svg>
@@ -240,6 +242,8 @@ import { take, combineLatest } from 'rxjs';
   `,
 })
 export class CheckoutComponent {
+  appSettings = AppSettings;
+  routes = ROUTES;
   checkoutForm: FormGroup;
   loadingCep = false;
   ufs = ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO'];

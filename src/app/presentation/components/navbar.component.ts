@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CartRepository } from '../../application/state/cart.repository';
 import { UserRepository } from '../../application/state/user.repository';
+import { AppSettings } from '../../config/app.config';
+import { ROUTES } from '../../config/routes.config';
 
 @Component({
   selector: 'app-navbar',
@@ -21,18 +23,18 @@ import { UserRepository } from '../../application/state/user.repository';
 
       <!-- Navbar Start: Desktop Menu (Hidden on Mobile) -->
       <div class="navbar-start hidden lg:flex">
-         <a routerLink="/" class="btn btn-ghost text-xl font-bold text-primary md:ml-[-1em]">Sweet Shop</a>
+         <a [routerLink]="routes.home.path" class="btn btn-ghost text-xl font-bold text-primary md:ml-[-1em]">{{ appSettings.storeName }}</a>
       </div>
 
       <!-- Navbar Center: Logo (Mobile) / Menu (Desktop) -->
       <div class="navbar-center lg:hidden">
-        <a routerLink="/" class="btn btn-ghost text-xl font-bold text-primary uppercase tracking-widest">Sweet Shop</a>
+        <a [routerLink]="routes.home.path" class="btn btn-ghost text-xl font-bold text-primary uppercase tracking-widest">{{ appSettings.storeName }}</a>
       </div>
       <div class="navbar-center hidden lg:flex">
         <ul class="menu menu-horizontal px-1 gap-8">
-          <li><a routerLink="/products" class="text-sm font-bold hover:text-primary uppercase tracking-widest transition-colors" routerLinkActive="bg-secondary text-secondary-content hover:text-secondary-content">Produtos</a></li>
-          <li><a routerLink="/aboutus" class="text-sm font-bold hover:text-primary uppercase tracking-widest transition-colors" routerLinkActive="bg-secondary text-secondary-content hover:text-secondary-content">Sobre</a></li>
-          <li><a routerLink="/contact" class="text-sm font-bold hover:text-primary uppercase tracking-widest transition-colors" routerLinkActive="bg-secondary text-secondary-content hover:text-secondary-content">Contato</a></li>
+          <li><a [routerLink]="routes.products.path" class="text-sm font-bold hover:text-primary uppercase tracking-widest transition-colors" routerLinkActive="bg-secondary text-secondary-content hover:text-secondary-content">Produtos</a></li>
+          <li><a [routerLink]="routes.about.path" class="text-sm font-bold hover:text-primary uppercase tracking-widest transition-colors" routerLinkActive="bg-secondary text-secondary-content hover:text-secondary-content">Sobre</a></li>
+          <li><a [routerLink]="routes.contact.path" class="text-sm font-bold hover:text-primary uppercase tracking-widest transition-colors" routerLinkActive="bg-secondary text-secondary-content hover:text-secondary-content">Contato</a></li>
         </ul>
       </div>
 
@@ -65,7 +67,7 @@ import { UserRepository } from '../../application/state/user.repository';
             </div>
           </label>
           <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-            <li><a routerLink="/profile" class="justify-between">Minha Conta</a></li>
+            <li><a [routerLink]="routes.profile.path" class="justify-between">Minha Conta</a></li>
             <li><a>Sair</a></li>
           </ul>
         </div>
@@ -95,7 +97,7 @@ import { UserRepository } from '../../application/state/user.repository';
         </button>
 
         <!-- Logo -->
-        <div class="text-xl font-bold uppercase tracking-widest">Sweet Shop</div>
+        <div class="text-xl font-bold uppercase tracking-widest">{{ appSettings.storeName }}</div>
 
         <!-- Right Icons -->
         <div class="flex gap-2">
@@ -113,7 +115,7 @@ import { UserRepository } from '../../application/state/user.repository';
         
         <!-- User Greeting -->
         <ng-container *ngIf="user$ | async as user; else noUser">
-          <a routerLink="/profile" (click)="closeMobileMenu()" class="flex items-center justify-between mb-8 pb-4 border-b border-base-200 group cursor-pointer">
+          <a [routerLink]="routes.profile.path" (click)="closeMobileMenu()" class="flex items-center justify-between mb-8 pb-4 border-b border-base-200 group cursor-pointer">
             <div>
               <div class="text-xl font-bold group-hover:text-primary transition-colors">Oi, {{ user.name }}</div>
               <div class="text-sm text-base-content/60">Que bom que você voltou</div>
@@ -122,7 +124,7 @@ import { UserRepository } from '../../application/state/user.repository';
           </a>
         </ng-container>
         <ng-template #noUser>
-          <a routerLink="/profile" (click)="closeMobileMenu()" class="flex items-center justify-between mb-8 pb-4 border-b border-base-200 group cursor-pointer">
+          <a [routerLink]="routes.profile.path" (click)="closeMobileMenu()" class="flex items-center justify-between mb-8 pb-4 border-b border-base-200 group cursor-pointer">
             <div>
               <div class="text-xl font-bold group-hover:text-primary transition-colors">Olá, Visitante</div>
               <div class="text-sm text-base-content/60">Entre ou cadastre-se</div>
@@ -133,26 +135,26 @@ import { UserRepository } from '../../application/state/user.repository';
 
         <!-- Links -->
         <nav class="flex flex-col gap-6">
-          <a routerLink="/products" (click)="closeMobileMenu()" class="text-lg font-bold uppercase tracking-wide flex justify-between items-center group">
+          <a [routerLink]="routes.products.path" (click)="closeMobileMenu()" class="text-lg font-bold uppercase tracking-wide flex justify-between items-center group">
             Produtos
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" /></svg>
           </a>          
-          <a routerLink="/" (click)="closeMobileMenu()" class="text-lg font-bold uppercase tracking-wide">
+          <a [routerLink]="routes.about.path" (click)="closeMobileMenu()" class="text-lg font-bold uppercase tracking-wide">
             Sobre Nós
           </a>
-          <a routerLink="/" (click)="closeMobileMenu()" class="text-lg font-bold uppercase tracking-wide">
-            Fale Conosco
+          <a [routerLink]="routes.contact.path" (click)="closeMobileMenu()" class="text-lg font-bold uppercase tracking-wide">
+            Contato
           </a>
         </nav>
 
         <!-- Bottom Actions -->
         <div class="mt-12 pt-8 border-t border-base-200 flex flex-col gap-4">
           <ng-container *ngIf="user$ | async as user; else loginButton">
-            <button routerLink="/profile" (click)="closeMobileMenu()" class="btn btn-outline btn-block uppercase">Minha Conta</button>
+            <button [routerLink]="routes.profile.path" (click)="closeMobileMenu()" class="btn btn-outline btn-block uppercase">Minha Conta</button>
             <button class="btn btn-ghost btn-block text-base-content/60 uppercase">Sair</button>
           </ng-container>
           <ng-template #loginButton>
-            <button routerLink="/profile" (click)="closeMobileMenu()" class="btn btn-outline btn-block uppercase">
+            <button [routerLink]="routes.profile.path" (click)="closeMobileMenu()" class="btn btn-outline btn-block uppercase">
               Entrar / Cadastrar
             </button>
           </ng-template>
@@ -166,13 +168,10 @@ export class NavbarComponent {
   count$;
   user$;
   isMobileMenuOpen = false;
+  appSettings = AppSettings;
+  routes = ROUTES;
 
-  themes = [
-    'mariam-gourmet',
-    'mariam-gourmet-dark',
-    'chocolate',
-    'abyss', 'acid', 'aqua', 'autumn', 'black', 'bumblebee', 'business', 'caramellatte', 'cmyk', 'coffee', 'corporate', 'cupcake', 'cyberpunk', 'dark', 'dim', 'dracula', 'emerald', 'fantasy', 'forest', 'garden', 'halloween', 'lemonade', 'light', 'lofi', 'luxury', 'night', 'nord', 'pastel', 'retro', 'silk', 'sunset', 'synthwave', 'valentine', 'winter', 'wireframe'
-  ];
+  themes = AppSettings.features.theme.available;
 
   constructor(
     private cartRepo: CartRepository,
@@ -182,7 +181,7 @@ export class NavbarComponent {
     this.user$ = this.userRepo.user$;
 
     // Initialize theme
-    const savedTheme = localStorage.getItem('theme') || 'chocolate';
+    const savedTheme = localStorage.getItem('theme') || AppSettings.features.theme.default;
     this.setTheme(savedTheme);
   }
 

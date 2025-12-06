@@ -3,6 +3,7 @@ import { selectAllEntities, setEntities, withEntities } from '@ngneat/elf-entiti
 import { Injectable } from '@angular/core';
 import { Product } from '../../domain/models/product.model';
 import { CsvService } from '../../infrastructure/services/csv.service';
+import { AppSettings } from '../../config/app.config';
 
 @Injectable({ providedIn: 'root' })
 export class ProductsRepository {
@@ -20,8 +21,9 @@ export class ProductsRepository {
     }
 
     load() {
-        this.csvService.loadProducts('assets/products.csv').subscribe(products => {
-            this.setProducts(products);
+        this.csvService.loadProducts(AppSettings.products.csvUrl).subscribe({
+            next: (products) => this.setProducts(products),
+            error: (err) => console.error('Failed to load products', err)
         });
     }
 }

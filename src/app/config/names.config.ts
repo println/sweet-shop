@@ -1,0 +1,33 @@
+export const NAMES = {
+  ACTIONS: {
+    close: 'close',
+    save: 'save',
+    send: 'send',
+    add: 'add',
+    remove: 'remove',
+    update: 'update',
+    open: 'open',
+    clear: 'clear',
+    filter: 'filter',
+    sort: 'sort',
+    export: 'export',
+    import: 'import',
+    toggle: 'toggle',
+    buy: 'buy',
+  },
+  BASIC_PAGES: {
+    any: '**',
+    empty: '',
+    id: 'id',
+    home: 'home',
+    products: 'products',
+    checkout: 'checkout',
+    profile: 'profile',
+    cart: 'cart',
+    about: 'about',
+    contact: 'contact',
+  },
+  ERROR_PAGES: {
+    error: 'error',
+  },
+};

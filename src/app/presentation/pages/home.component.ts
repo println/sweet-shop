@@ -7,6 +7,8 @@ import { CartRepository } from '../../application/state/cart.repository';
 import { Product } from '../../domain/models/product.model';
 import { Observable, map, BehaviorSubject, combineLatest } from 'rxjs';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { AppSettings } from '../../config/app.config';
+import { ROUTES } from '../../config/routes.config';
 
 @Component({
   selector: 'app-home',
@@ -24,12 +26,12 @@ import { trigger, transition, style, animate } from '@angular/animations';
     <div class="hero min-h-[60vh] w-full relative mb-12">      
       <div class="hero-content text-center text-neutral-content relative z-10">
         <div class="max-w-md">
-          <h1 class="mb-5 text-3xl md:text-5xl font-bold bg-accent text-accent-content inline-block p-3">Sweet Shop</h1>
-          <p class="mb-5 text-lg">Delícias artesanais feitas com amor para você.</p>
-          <button routerLink="/products" class="btn btn-primary btn-lg text-primary-content border-none hover:bg-primary-focus">Ver Produtos</button>
+          <h1 class="mb-5 text-3xl md:text-5xl font-bold bg-accent text-accent-content inline-block p-3">{{ appSettings.layout.hero.title }}</h1>
+          <p class="mb-5 text-lg">{{ appSettings.layout.hero.subtitle }}</p>
+          <button [routerLink]="routes.products.path" class="btn btn-primary btn-lg text-primary-content border-none hover:bg-primary-focus">Ver Produtos</button>
         </div>
       </div>
-      <img src="https://images.unsplash.com/photo-1550617931-e17a7b70dce2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80" alt="Hero Background" class="absolute inset-0 w-full h-full object-cover" />              
+      <img [src]="appSettings.layout.hero.image" alt="Hero Background" class="absolute inset-0 w-full h-full object-cover" />              
       <div class="absolute inset-0 bg-black/25 z-0"></div>
     </div>
 
@@ -72,7 +74,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
 
     <!-- Button Section -->
     <section class="container mx-auto p-4 mb-12 text-center">
-      <button routerLink="/products" [queryParams]="{category: selectedCategory}" class="btn btn-wide btn-primary hover:bg-primary-focus border-none uppercase tracking-widest text-primary-content">
+      <button [routerLink]="routes.products.path" [queryParams]="{category: selectedCategory}" class="btn btn-wide btn-primary hover:bg-primary-focus border-none uppercase tracking-widest text-primary-content">
         SHOP {{ selectedCategory }}
       </button>
     </section>
@@ -80,6 +82,8 @@ import { trigger, transition, style, animate } from '@angular/animations';
 })
 export class HomeComponent implements OnInit {
   @ViewChild('carousel') carousel!: ElementRef<HTMLElement>;
+  appSettings = AppSettings;
+  routes = ROUTES;
   categories = ['Bolos', 'Doces', 'Especiais'];
   _selectedCategory = 'Bolos';
 

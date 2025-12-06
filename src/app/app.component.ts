@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet, ActivatedRoute, Router, NavigationEnd } from '@angular/router';
 import { NavbarComponent } from './presentation/components/navbar.component';
 import { FooterComponent } from './presentation/components/footer.component';
 import { CartComponent } from './presentation/components/cart.component';
 import { CartRepository } from './application/state/cart.repository';
+import { AppSettings } from './config/app.config';
 import { Observable } from 'rxjs';
 import { filter, map, startWith } from 'rxjs/operators';
 
@@ -38,8 +40,10 @@ export class AppComponent implements OnInit {
   constructor(
     public cartRepo: CartRepository,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private titleService: Title
   ) {
+    this.titleService.setTitle(AppSettings.storeName);
     this.showLayout$ = this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
       map(() => !this.router.url.includes('/checkout')),

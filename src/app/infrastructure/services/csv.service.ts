@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { Observable, map, catchError, of } from 'rxjs';
 import * as Papa from 'papaparse';
 import { Product } from '../../domain/models/product.model';
 
@@ -24,6 +24,10 @@ export class CsvService {
                     category: item.category,
                     tags: item.tags ? item.tags.split(',') : []
                 })) as Product[];
+            }),
+            catchError(error => {
+                console.error('Error loading CSV:', error);
+                return of([]); // Return empty array on error
             })
         );
     }

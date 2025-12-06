@@ -1,6 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { ProductsRepository } from '../../application/state/products.repository';
 import { CartRepository } from '../../application/state/cart.repository';
 import { Product } from '../../domain/models/product.model';
@@ -9,14 +9,14 @@ import { Observable, map, switchMap, of } from 'rxjs';
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule],
   template: `
-    <div class="container mx-auto p-4 lg:p-8 min-h-screen bg-base-100 pb-24 lg:pb-8">
-
-      <div *ngIf="product$ | async as product; else loading" class="flex flex-col lg:flex-row gap-6 lg:gap-12">
+    <div class="w-full max-w-screen-2xl mx-auto px-4 md:px-8 lg:px-7 py-8 min-h-screen bg-base-100 pb-24 lg:pb-12">
+ 
+      <div *ngIf="product$ | async as product; else loading" class="flex flex-col md:flex-row gap-5">
         
         <!-- Mobile Header (Title, Badges, Reviews) -->
-        <div class="lg:hidden">
+        <div class="md:hidden w-full">
           <h1 class="text-2xl font-bold text-base-content mb-2">{{ product.name }}</h1>
           
           <div class="flex items-center gap-4 mb-4">
@@ -32,11 +32,11 @@ import { Observable, map, switchMap, of } from 'rxjs';
           </div>
         </div>
 
-        <!-- Left Column: Images -->
-        <div class="w-full lg:w-3/5">
+        <!-- Left Column: Images (Flexible) -->
+        <div class="gap-3">
           
           <!-- Mobile Carousel -->
-          <div class="lg:hidden relative aspect-[4/5] bg-base-200 overflow-hidden mb-6 group -mx-4 w-[calc(100%+2rem)]"
+          <div class="md:hidden relative aspect-[4/5] bg-base-200 overflow-hidden mb-6 group -mx-4 w-[calc(100%+2rem)]"
                (touchstart)="onTouchStart($event)" 
                (touchend)="onTouchEnd($event)">
             <img [src]="images[currentImageIndex]" [alt]="product.name" class="w-full h-full object-cover transition-opacity duration-300">
@@ -60,19 +60,19 @@ import { Observable, map, switchMap, of } from 'rxjs';
           </div>
 
           <!-- Desktop Grid -->
-          <div class="hidden lg:grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="aspect-[4/5] bg-base-200 rounded-lg overflow-hidden" *ngFor="let img of images">
+          <div class="hidden md:grid grid-cols-1 md:grid-cols-2 lg:gap-2 gap-3">
+            <div class="aspect-[4/4] bg-base-200 overflow-hidden" *ngFor="let img of images">
               <img [src]="img" [alt]="product.name" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
             </div>
           </div>
         </div>
 
-        <!-- Right Column: Product Details -->
-        <div class="w-full lg:w-2/5 flex flex-col gap-6 sticky top-24 h-fit">
+        <!-- Right Column: Product Details (Fixed Width) -->
+        <div class="lg:max-w-[480px] max-w-[400px]">
           
           <div>
             <!-- Desktop Title, Badges, Reviews (Hidden on Mobile) -->
-            <div class="hidden lg:block">
+            <div class="hidden md:block">
               <h1 class="text-3xl lg:text-4xl font-bold text-base-content mb-2">{{ product.name }}</h1>
               
               <!-- Ratings & Badges -->
